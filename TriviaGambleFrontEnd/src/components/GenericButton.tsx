@@ -5,6 +5,10 @@ const variants = {
     open: {rotate: [-20, 10, 0]},
     closed: {rotate: 0}
 }
+const variantsSubmit = {
+    open: {rotate: [-20, 10, 0]},
+    closed: {rotate: 360}
+}
 
 export default function Button({ text, btnWidth, btnHeight, btnType, data }) {
 
@@ -25,14 +29,15 @@ export default function Button({ text, btnWidth, btnHeight, btnType, data }) {
             onClick={handleClick}
             style={{
                 background: btn === 'generic-btn' ? '#43BCCD' : '#662E9B',
-                width: btnWidth,
-                height: btnHeight,
+                // width: btnWidth,
+                // height: btnHeight,
             }}
-            initial={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 1, scale: 1, rotate: 0 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             animate={btnClicked ? "open" : "closed"}
-            variants={variants}
+            variants={btn === 'submit-btn' ? variantsSubmit : variants}
+            transition={{duration: 1}}
         >
             {buttonText}
         </motion.button>

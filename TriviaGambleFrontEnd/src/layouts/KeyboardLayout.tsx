@@ -10,21 +10,20 @@ export default function Keyboard() {
     const [lastInput, setLastInput] = useState([0])
 
     function updateInput(value) {
-        if (keyboardInput === 0 && typeof value === "number") {
-            setLastInput(prevInput => [...prevInput, keyboardInput])
-            setKeyBoardInput(value)
-        } else if (typeof value === "number") {
-            setLastInput(prevInput => [...prevInput, keyboardInput])
-            setKeyBoardInput(prevInput => prevInput * 10 + value)
-        } else if (value === 'Back') {
-            if (lastInput.length > 0) {
-                setKeyBoardInput(lastInput.pop())
+            if (keyboardInput === 0 && typeof value === "number") {
+                setLastInput(prevInput => [...prevInput, keyboardInput])
+                setKeyBoardInput(value)
+            } else if (typeof value === "number" && keyboardInput.toString().length < 2) {
+                setLastInput(prevInput => [...prevInput, keyboardInput])
+                setKeyBoardInput(prevInput => prevInput * 10 + value)
+            } else if (value === 'Back') {
+                if (lastInput.length > 0) {
+                    setKeyBoardInput(lastInput.pop())
+                }
+            } else if (value === 'Submit') {
+                setKeyBoardInput(0)
+                setLastInput([0])
             }
-        } else if (value === 'Submit') {
-            setKeyBoardInput(0)
-            setLastInput([0])
-        }
-        
     }
 
     return (
@@ -35,10 +34,7 @@ export default function Keyboard() {
             transition={{ duration: 1 }}
         >
             <NumberKeyboard update={updateInput} />
-            <ControlKeyboard update={updateInput} />
-            <div id='key-input-box'>
-                <KeyboardInput num={keyboardInput} />
-            </div>
+            <ControlKeyboard currentNum={keyboardInput} update={updateInput} />
 
         </motion.div>
     )
