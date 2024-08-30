@@ -1,5 +1,54 @@
+html {
+  width: 98vw;
+}
+
 body {
-  width: 97vw;
+  width: 100%;
+  padding: 10px;
+}
+
+/* header css */
+
+#header {
+  background-color: #F9C80E;
+  border-radius: 1rem;
+}
+
+#logo-box {
+  height: 6rem;
+  width: 6rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+#logo-img {
+  border-radius: 1rem;
+  border: solid 2px aliceblue;
+}
+
+/* timer css */
+
+#timer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 1 1 3rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background-color: #EA3546;
+  border-radius: 1rem;
+  border: solid 2px #F9C80E
+}
+
+/* SideBar Css */
+
+#side-bar {
+  background-color: #F86624;
+  border-radius: 1rem;
 }
 
 .generic-btn, .submit-btn, .back-btn {
@@ -18,6 +67,8 @@ body {
 .back-btn, .submit-btn {
   font-size: 1rem;
 }
+
+/* number keyboard css */
 
 .num-col-1, .num-col-2 {
   display: flex;
@@ -69,13 +120,3 @@ body {
   border-radius: 25px;
 }
 
-#timer {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  background-color: #EA3546;
-  border-radius: 15px;
-}

@@ -4,7 +4,7 @@ import NumberKeyboard from "../components/NumberKeyboardLayout";
 import ControlKeyboard from "../components/ControlKeyboardLayout";
 import KeyboardInput from "../components/KeyboardInput";
 
-export default function Keyboard() {
+export default function Keyboard({ resetTimer }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
@@ -23,6 +23,7 @@ export default function Keyboard() {
             } else if (value === 'Submit') {
                 setKeyBoardInput(0)
                 setLastInput([0])
+                resetTimer()
             }
     }
 

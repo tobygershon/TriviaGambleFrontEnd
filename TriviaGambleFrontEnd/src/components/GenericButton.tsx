@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const variants = {
-    open: {rotate: [-20, 10, 0]},
+    open: {rotate: [-10, 5, 0]},
     closed: {rotate: 0}
 }
 const variantsSubmit = {

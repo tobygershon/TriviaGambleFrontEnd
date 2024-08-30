@@ -1,131 +1,59 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useAnimate, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Timer from "../components/Timer";
+import TimerFinal from "../components/TimerSubsequent";
 
-export default function Timer() {
+export default function TimerLayout({ resetTimer, handleTimerOver }) {
 
-    const ref = useRef(5)
+    const ref = useRef(0)
     const [number, setNumber] = useState(5)
+    const [timerOver, setTimerOver] = useState(false)
 
-    // const [scope, animate] = useAnimate()
+    useEffect(() => {
+        handleTimerOver(timerOver)
+    }, [timerOver])
 
-    function countdown() {
-        const clearRef = setInterval(() => {
-            if (ref.current === 0) {
+    useEffect(() => {
+        startCountdown(5, ref.current)
+    }, [resetTimer])
+
+    function countdown(startingNum: number) {
+        let currentNum = startingNum
+        ref.current = setInterval(() => {
+            if (currentNum === 0) {
                 setNumber(prevNum => prevNum - 1)
-                clearInterval(clearRef)
+                clearInterval(ref.current)
             } else {
                 setNumber(prevNum => prevNum - 1)
-                ref.current -= 1
-                console.log(ref.current)
+                currentNum -= 1
+                if (currentNum === 0) {
+                    setTimerOver(true)
+                }
             }
         }
             , 1000)
     }
 
-    useEffect(() => {
-        countdown()
-    }, [])
+    console.log(timerOver)
 
-    // useEffect(() => {
-    //     animate("p", {scale: .75}, {duration: 1})
-    // }, [number])
+    function startCountdown(startNum, clearIntRef) {
+        if (clearIntRef) {
+        clearInterval(clearIntRef)
+        setNumber(startNum)
+        }
+        countdown(startNum)
+    }
 
     return (
-        // <div id="timer" ref={scope} >
-        //     {number === 5 && <p>
-        //         {number}
-        //         </p>}
-        //     {number === 4 && <p>
-        //         {number}
-        //     </p>}
-        //     {number === 3 && <p>
-        //         {number}
-        //     </p>}
-        //     {number === 2 && <p>
-        //         {number}
-        //     </p>}
-        //     {number === 1 && <p>
-        //         {number}
-        //     </p>}
-        //     {number === 0 && <p>
-        //         {number}
-        //     </p>}
-        // </div>
-
-        <AnimatePresence>
-            <motion.div 
-                id='timer'
-                // initial={{scale: 1}}
-                animate={{borderRadius: ['20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%'],
-                            scale: [1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1]
-                }}
-                transition={{duration: 6}}
-                >
-                {number === 5 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0], scale: [.75, 1, .75] }}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number === 4 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0], scale: [.75, 1, .75] }}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number === 3 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0], scale: [.75, 1, .75] }}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number === 2 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0], scale: [.75, 1, .75] }}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number === 1 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0], scale: [.75, 1, .75] }}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number === 0 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1, scale: 1}}
-                        transition={{ duration: 1 }}
-                    >
-                        {number}
-                    </motion.div>
-                )}
-                {number < 0 && (
-                    <motion.div
-                        initial={{ opacity: 1, scale: 1 }}
-                        animate={{ opacity: [1, .75, 0], scale: [1, 1.5, 0] }}
-                        transition={{ duration: 2 }}
-                    >
-                        0
-                    </motion.div>
-                )}
-            </motion.div>
-        </AnimatePresence>
-
+        <>
+            {number === 5 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number === 4 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number === 3 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number === 2 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number === 1 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number === 0 && <AnimatePresence><Timer number={number} /></AnimatePresence>}
+            {number < 0 && <AnimatePresence><TimerFinal number={0} /></AnimatePresence>}
+        </>
+        
     )
 }
