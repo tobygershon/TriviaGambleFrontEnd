@@ -51,8 +51,6 @@ export default function GameLayout() {
         "rounds": []
     })
 
-    const [numberOfRounds, setNumberOfRounds] = useState(gameData.rounds.length)
-
     const [playersData, setPlayersData] = useState([])
     const [player1, setPlayer1] = useState({})
     const [player2, setPlayer2] = useState({})
@@ -71,11 +69,9 @@ export default function GameLayout() {
     // below are the onSnapshot effects to update real time info
 
     useEffect(() => {
-        const unsub = onSnapshot(doc(db, "games", gameId), (document) => {
-            if (document.data()) {
-            setGameData(document.data())
-            setNumberOfPlayers(document.data().players.length)
-            setNumberOfRounds(document.data().rounds.length)
+        const unsub = onSnapshot(doc(db, "games", gameId), (snapshot) => {
+            if (snapshot.data()) {
+            setGameData(snapshot.data())
             } else {
                 console.log("error retrieving game data")
             }
@@ -83,48 +79,48 @@ export default function GameLayout() {
         return unsub
     }, [])
 
-    useEffect(() => {
-        if (gameData.players[0]) {
-            const unsub = onSnapshot(doc(db, "players", gameData.players[0]), (document) => {
-                if (document.data()) {
-                    console.log(document.data())
-                } else {
-                    console.log("error retrieving player data")
-                }
-                })
-            return unsub
-            }
-        }, [gameData.players])
+    // useEffect(() => {
+    //     if (gameData.players[0]) {
+    //         const unsub = onSnapshot(doc(db, "players", gameData.players[0]), (snapshot) => {
+    //             if (snapshot.data()) {
+    //                 console.log(snapshot.data())
+    //             } else {
+    //                 console.log("error retrieving player data")
+    //             }
+    //             })
+    //         return unsub
+    //         }
+    //     }, [gameData.players])
 
-        useEffect(() => {
-            if (gameData.players[1]) {
-            const unsub = onSnapshot(doc(db, "players", gameData.players[1]), (document) => {
-                if (document.data()) {
-                    setPlayer2(document.data())
-                } else {
-                    console.log("error retrieving player data")
-                }
-                })
-            return unsub
-            }
-        }, [gameData.players])
+    //     useEffect(() => {
+    //         if (gameData.players[1]) {
+    //         const unsub = onSnapshot(doc(db, "players", gameData.players[1]), (snapshot) => {
+    //             if (snapshot.data()) {
+    //                 setPlayer2(snapshot.data())
+    //             } else {
+    //                 console.log("error retrieving player data")
+    //             }
+    //             })
+    //         return unsub
+    //         }
+    //     }, [gameData.players])
 
-        useEffect(() => {
-            if (gameData.players[2]) {
-            const unsub = onSnapshot(doc(db, "players", gameData.players[2]), (document) => {
-                if (document.data()) {
-                    console.log(document.data())
-                } else {
-                    console.log("error retrieving player data")
-                }
-                })
-            return unsub
-            }
-        }, [gameData.players])
+    //     useEffect(() => {
+    //         if (gameData.players[2]) {
+    //         const unsub = onSnapshot(doc(db, "players", gameData.players[2]), (snapshot) => {
+    //             if (snapshot.data()) {
+    //                 console.log(snapshot.data())
+    //             } else {
+    //                 console.log("error retrieving player data")
+    //             }
+    //             })
+    //         return unsub
+    //         }
+    //     }, [gameData.players])
 
     return (
         <>
-            <Header resetTimer={toggleTimerReset} disableSubmit={disableSubmit} player2={player2.name}/>
+            <Header resetTimer={toggleTimerReset} disableSubmit={disableSubmit} players={gameData.players}/>
             <div className="columns">
                 <div className="column is-one-fifth"><SideMenu /></div>
                 <div className="column"><ActionGameLayout resetTimer={resetTimer} timerOver={timerIsOver} /></div>

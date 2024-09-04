@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import TimerLayout from './TimerLayout'
+import Scoreboard from '../components/Scoreboard'
 
 
-export default function Header({ resetTimer, disableSubmit, player2 }) {
+export default function Header({ resetTimer, disableSubmit, players }) {
 
     const [showTimer, setShowTimer] = useState(true)
 
@@ -40,24 +41,7 @@ export default function Header({ resetTimer, disableSubmit, player2 }) {
                     </div>
                 </div>
             
-                <div className="level-item has-text-centered">
-                    <div>
-                        <p className="heading">Player 1</p>
-                        <p className="title">{}</p>
-                    </div>
-                </div>
-                <div className="level-item has-text-centered">
-                    <div>
-                        <p className="heading">Player 2</p>
-                        <p className="title">{player2}</p>
-                    </div>
-                </div>
-                <div className="level-item has-text-centered">
-                    <div>
-                        <p className="heading">Player</p>
-                        <p className="title">Name</p>
-                    </div>
-                </div>
+                <Scoreboard players={players}/>
             
         </motion.nav>
     )
