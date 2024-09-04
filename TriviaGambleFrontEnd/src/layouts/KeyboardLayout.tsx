@@ -4,7 +4,7 @@ import NumberKeyboard from "../components/NumberKeyboardLayout";
 import ControlKeyboard from "../components/ControlKeyboardLayout";
 import KeyboardInput from "../components/KeyboardInput";
 
-export default function Keyboard({ resetTimer }) {
+export default function Keyboard({ resetTimer, timerOver }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
@@ -32,10 +32,10 @@ export default function Keyboard({ resetTimer }) {
             className='keyboard'
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 5 }}
         >
             <NumberKeyboard update={updateInput} />
-            <ControlKeyboard currentNum={keyboardInput} update={updateInput} />
+            <ControlKeyboard currentNum={keyboardInput} update={updateInput} timerOver={timerOver} />
 
         </motion.div>
     )

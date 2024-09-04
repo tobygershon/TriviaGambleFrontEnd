@@ -10,7 +10,7 @@ const variantsSubmit = {
     closed: {rotate: 360}
 }
 
-export default function Button({ text, btnWidth, btnHeight, btnType, data }) {
+export default function Button({ text, btnWidth, btnHeight, btnType, data, timerOver }) {
 
     const buttonText: string = text
     const btn: string = btnType
@@ -37,7 +37,8 @@ export default function Button({ text, btnWidth, btnHeight, btnType, data }) {
             whileTap={{ scale: 0.9 }}
             animate={btnClicked ? "open" : "closed"}
             variants={btn === 'submit-btn' ? variantsSubmit : variants}
-            transition={{duration: 1}}
+            transition={{duration: .75}}
+            disabled={timerOver}
         >
             {buttonText}
         </motion.button>

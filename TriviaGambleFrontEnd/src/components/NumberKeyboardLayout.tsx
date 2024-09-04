@@ -1,5 +1,5 @@
 import React from "react";
-import GenericButton from './GenericButton'
+import Button from './GenericButton'
 import { motion } from "framer-motion";
 
 export default function NumberKeyboard({ update }) {
@@ -20,7 +20,7 @@ export default function NumberKeyboard({ update }) {
     }
 
     const firstButtons = firstNumbers.map((num) => (
-        <GenericButton
+        <Button
             data={updateData}
             key={num}
             text={num}
@@ -31,7 +31,7 @@ export default function NumberKeyboard({ update }) {
     ))
 
     const secondButtons = secondNumbers.map((num) => (
-        <GenericButton
+        <Button
             data={updateData}
             key={num}
             text={num}

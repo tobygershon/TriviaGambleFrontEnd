@@ -28,12 +28,12 @@ export default function SideMenu() {
                 <motion.aside
                     id='side-bar'
                     className={showMenu ? 'menu navbar-menu is-active' : 'menu navbar-menu'}
-                    initial={{ opacity: 0, scale: .8 }}
+                    initial={{ opacity: 0, scale: .7 }}
                     animate={{
-                        opacity: [0, .1, .25, .5, 1],
-                        scale: 1
+                        opacity: [0, 0, 1, 1, 1],
+                        scale: [.7, .7, 1, 1, 1]
                     }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 2 }}
                 >
                     <div className="is-flex is-flex-direction-column mx-2 my-2">
                         <p className="menu-label">Game Stats</p>

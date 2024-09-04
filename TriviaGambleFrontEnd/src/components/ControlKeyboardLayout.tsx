@@ -1,8 +1,8 @@
 import React from "react";
-import GenericButton from './GenericButton'
+import Button from './GenericButton'
 import KeyboardInput from "./KeyboardInput";
 
-export default function ControlKeyboard({ update, currentNum }) {
+export default function ControlKeyboard({ update, currentNum, timerOver }) {
 
     function updateData(value) {
         update(value)
@@ -11,23 +11,25 @@ export default function ControlKeyboard({ update, currentNum }) {
     return (
 
         <div className='ctrl-keyboard'>
-            <GenericButton
+            <Button
                 data={updateData}
                 text='Back'
                 btnType={'back-btn'}
-                btnWidth={100}
-                btnHeight={50} />
+                // btnWidth={100}
+                // btnHeight={50} 
+                />
 
             <div id='key-input-box'>
                 <KeyboardInput num={currentNum} />
             </div>
 
-            <GenericButton
+            <Button
                 data={updateData}
-                text='Submit'
+                text={currentNum === 0 ? 'You Go!' : 'Submit'}
                 btnType={'submit-btn'}
-                btnWidth={100}
-                btnHeight={50} />
+                // btnWidth={100}
+                // btnHeight={5}
+                timerOver={timerOver} />
         </div>
 
     )
