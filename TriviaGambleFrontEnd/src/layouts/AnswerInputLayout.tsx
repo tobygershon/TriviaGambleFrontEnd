@@ -29,12 +29,12 @@ export default function AnswerInput() {
                 autoFocus/>
             <div className="is-flex is-justify-content-center mt-2">
                 <Button 
-                className={''}
+                className='generic-btn'
                 text={'Clear'}  
                 data={handleClear}
                 />
                 <Button 
-                className={'submit-btn'}
+                className='submit-btn'
                 text={'Submit'}  
                 />
             </div>

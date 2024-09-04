@@ -1,5 +1,7 @@
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom"
-import HomeLayout from "./layouts/GameLayout"
+import GeneralLayout from "./layouts/GeneralLayout"
+import GameLayout from "./layouts/GameLayout"
+import HomeLayout from "./layouts/HomeLayout"
 
 import './App.css'
 
@@ -7,8 +9,9 @@ function App() {
 
       const router = createBrowserRouter(createRoutesFromElements(
 
-      <Route path="/" element={<HomeLayout />} >
-
+      <Route path="/" element={<GeneralLayout />} >
+        <Route path="" element={<HomeLayout />}/>
+        <Route path="/:gameId" element={<GameLayout />}/>
       </Route>
      
   ))

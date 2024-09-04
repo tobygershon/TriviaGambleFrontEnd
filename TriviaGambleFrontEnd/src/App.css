@@ -57,26 +57,10 @@ body {
   border-radius: 1rem;
 }
 
-.generic-btn, .submit-btn, .back-btn {
-  box-shadow: 1px 1px 2px black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  flex-shrink: 1;
-  border: solid 1px white;
-  font-size: 2rem;
-  margin: .25rem;
-}
-
-.back-btn, .submit-btn {
-  font-size: 1rem;
-}
-
 /* Action box css */
 
 #action-box {
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex: 1, 1, 100%;
   background-image: linear-gradient(to bottom right, #662E9B, #5D52A8);
@@ -132,6 +116,7 @@ body {
   background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 1), rgba(255, 255, 255, .5));
   box-shadow: 1px 1px 5px black;
   border-radius: 1rem;
+  margin: 1rem;
 }
 
 #key-input-box {
@@ -167,5 +152,23 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   padding: 10px 20px;
+}
+
+/* Button css */
+
+.generic-btn, .submit-btn, .back-btn {
+  box-shadow: 1px 1px 2px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  flex-shrink: 1;
+  border: solid 1px white;
+  font-size: 2rem;
+  margin: .25rem;
+}
+
+.back-btn, .submit-btn {
+  font-size: 1rem;
 }
 

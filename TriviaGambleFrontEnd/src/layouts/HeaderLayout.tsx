@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import TimerLayout from './TimerLayout'
 
 
-export default function Header({ resetTimer, disableSubmit }) {
+export default function Header({ resetTimer, disableSubmit, player2 }) {
 
     const [showTimer, setShowTimer] = useState(true)
 
@@ -42,14 +42,14 @@ export default function Header({ resetTimer, disableSubmit }) {
             
                 <div className="level-item has-text-centered">
                     <div>
-                        <p className="heading">Player</p>
-                        <p className="title">Name</p>
+                        <p className="heading">Player 1</p>
+                        <p className="title">{}</p>
                     </div>
                 </div>
                 <div className="level-item has-text-centered">
                     <div>
-                        <p className="heading">Player</p>
-                        <p className="title">Name</p>
+                        <p className="heading">Player 2</p>
+                        <p className="title">{player2}</p>
                     </div>
                 </div>
                 <div className="level-item has-text-centered">
