@@ -1,21 +1,25 @@
 html {
   width: 98vw;
+  height: 100vh;
 }
 
 body {
+  display:flex;
+  justify-content: center;
   width: 100%;
   padding: 10px;
-  background-image: linear-gradient(to bottom right, white, rgba(67, 188, 205, .1));
+  background-image: linear-gradient(to bottom right, white, rgba(67, 188, 205, .25));
+}
+
+#root {
+  width: 100%;
 }
 
 /* header css */
 
 #header {
-  /* background-image: linear-gradient(to bottom right, rgba(67, 188, 205, 1), rgba(67, 188, 205, .75)); */
   background-image: linear-gradient(to bottom right, #F9C80E, #F9B014);
-  /* box-shadow: 1px 1px 5px black; */
   border-radius: 1rem;
-  /* padding: 2px; */
 }
 
 #logo-box {
@@ -49,24 +53,25 @@ body {
   border: solid 2px #F9C80E
 }
 
+
 /* SideBar Css */
 
 #side-bar {
   background-image: linear-gradient(to bottom right, #F86624, #F55A2D);
-  /* box-shadow: 1px 1px 5px black; */
   border-radius: 1rem;
 }
 
 /* Action box css */
 
 #action-box {
-  /* height: 100%; */
   display: flex;
-  flex: 1, 1, 100%;
+  flex-wrap: wrap;
+  flex: 1, 1;
+  height: 100%;
   background-image: linear-gradient(to bottom right, #662E9B, #5D52A8);
-  /* box-shadow: 1px 1px 5px black; */
   border-radius: 1rem;
-  padding: 1rem
+  padding: 1rem;
+  color: white;
 }
 
 /* Chat box css */
@@ -144,12 +149,12 @@ body {
 }
 
 .text-input {
-  height: 2rem;
+  height:3rem;
   border: 2px solid aliceblue;
   border-radius: 1rem;
   background: #43BCCD;
   color: #F9C80E;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   padding: 10px 20px;
 }

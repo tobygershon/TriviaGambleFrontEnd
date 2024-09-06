@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from 'framer-motion'
 import Button from "../components/GenericButton";
 
-export default function AnswerInput() {
+export default function AnswerInput({ type }) {
     
     const [textInput, setTextInput] = useState("")
 
@@ -14,7 +14,7 @@ export default function AnswerInput() {
         setTextInput('')
     }
 
-    console.log(textInput)
+   
 
     return (
         <motion.div
@@ -22,7 +22,7 @@ export default function AnswerInput() {
             <input 
                 className='text-input' 
                 type='text' 
-                placeholder="Type Answers Here" 
+                placeholder={type === 'category' ? "Choose a Category" : "Type Answers Here"}
                 name="textInput" 
                 value={textInput} 
                 onChange={handleInputChange}

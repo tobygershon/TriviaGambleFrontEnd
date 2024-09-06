@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export default function SideMenu() {
+export default function SideMenu({ gameData, currentRound }) {
 
     const [showMenu, setShowMenu] = useState(false)
 
