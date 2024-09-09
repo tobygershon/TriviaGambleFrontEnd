@@ -56,11 +56,9 @@ export default function GameLayout() {
 
     const [currentRoundData, setCurrentRoundData] = useState(false)
 
-    console.log(currentRoundData ? "true" : "false")
 
     useEffect(() => {
         setCurrentRoundId(getCurrentRoundId())
-        console.log("from set currentRoundId")
     }, [gameData])
 
     function getCurrentRoundId() {
@@ -102,7 +100,6 @@ export default function GameLayout() {
         const unsub = onSnapshot(doc(db, "rounds", currentRoundId), (snapshot) => {
             if (snapshot.data()) {
                 setCurrentRoundData(snapshot.data())
-                console.log("from rounds snapshot")
             } else {
                 console.log("error retrieving current round data")
             }

@@ -11,7 +11,6 @@ useEffect(() => {
         const unsub = onSnapshot(doc(db, "players", player), (snapshot) => {
             if (snapshot.data()) {
                 setPlayerData(snapshot.data())
-                console.log(snapshot.data())
             } else {
                 console.log("error retrieving player data")
             }

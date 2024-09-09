@@ -34,8 +34,6 @@ export default function TimerLayout({ resetTimer, handleTimerOver }) {
             , 1000)
     }
 
-    console.log(timerOver)
-
     function startCountdown(startNum, clearIntRef) {
         if (clearIntRef) {
         clearInterval(clearIntRef)
