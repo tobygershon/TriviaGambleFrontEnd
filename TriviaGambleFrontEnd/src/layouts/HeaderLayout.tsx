@@ -8,7 +8,7 @@ import { useStore } from '@tanstack/react-store'
 
 export default function Header({ resetTimer, disableSubmit, players }) {
 
-    const [showTimer, setShowTimer] = useState(false)
+    const [showTimer, setShowTimer] = useState(true)
     const gamePhase = useStore(store, (state) => state["gamePhase"])
 
     useEffect(() => {

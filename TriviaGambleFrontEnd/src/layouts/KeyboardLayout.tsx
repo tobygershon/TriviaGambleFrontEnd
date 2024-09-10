@@ -6,12 +6,11 @@ import CurrentMessage from "../components/CurrentMessage";
 import { store } from "../store";
 import { useStore } from "@tanstack/react-store";
 
-export default function Keyboard({ resetTimer, timerOver }) {
+export default function Keyboard({ resetTimer, timerOver, highBet }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
 
-    const [highBet, setHighBet] = useState(false)
     const [message, setMessage] = useState("Place Your First Bet!")
     const [currentHighBet, setCurrentHighBet] = useState({})
 
@@ -37,8 +36,24 @@ export default function Keyboard({ resetTimer, timerOver }) {
             } else if (value === 'Submit') {
                 setKeyBoardInput(0)
                 setLastInput([0])
-                resetTimer()
+                if (checkIfNewBetIsHigher()) {
+                    resetTimer()
+                    // send new bet to backend
+                    updateMessage(['Good Bet!'])
+                } else {
+                    updateMessage([`You need to bet more than ${highBet}`])
+                }
+                
+                
             }
+    }
+
+    const checkIfNewBetIsHigher = () => keyboardInput > highBet ? true : false;
+    const updateMessage = (message) => {
+        store.setState((state) => ({
+            ...state,
+            ["currentMessage"]: [message]
+        }))
     }
 
     return (

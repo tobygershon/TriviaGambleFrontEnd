@@ -1,6 +1,8 @@
 import { Store } from "@tanstack/react-store";
+import CurrentMessage from "./components/CurrentMessage";
 
 export const store = new Store({
+    currentMessage: ["Waiting for players to join ..."],
     isJudge: "",
     winner: "",
     isAnswering: "",

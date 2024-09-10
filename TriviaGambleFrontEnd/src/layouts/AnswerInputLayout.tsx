@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import Button from "../components/GenericButton";
 import CurrentMessage from "../components/CurrentMessage";
 
-export default function AnswerInput({ type }) {
+export default function AnswerInput({ type, resetTimer, timerOver }) {
     
     const [textInput, setTextInput] = useState("")
 
@@ -13,6 +13,22 @@ export default function AnswerInput({ type }) {
 
     function handleClear() {
         setTextInput('')
+    }
+
+    function handleSubmit() {
+        if (type === 'category') {
+            // call backend for judge to set category
+            handleClear()
+            console.log('category submitted')
+        } else if (type === 'answers') {
+            // call backend to submit answer
+            handleClear()
+            resetTimer()
+            console.log('answer submitted')
+        } else {
+            // set msg to say theres a problem?
+            console.log('There was a problem with the type for the answer input submit')
+        }
     }
 
    
@@ -28,15 +44,17 @@ export default function AnswerInput({ type }) {
                 value={textInput} 
                 onChange={handleInputChange}
                 autoFocus/>
-            <div className="is-flex is-justify-content-center mt-2">
+            <div className="is-flex is-justify-content-space-evenly">
                 <Button 
-                className='generic-btn'
+                btnType='back-btn'
                 text={'Clear'}  
                 data={handleClear}
                 />
                 <Button 
-                className='submit-btn'
-                text={'Submit'}  
+                btnType='submit-btn'
+                text={'Submit'}
+                data={handleSubmit}
+                timerOver={timerOver}
                 />
             </div>
             

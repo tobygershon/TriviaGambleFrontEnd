@@ -98,7 +98,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     }, [gamePhase])
 
     // Input
-    const [showInput, setShowInput] = useState(false)
+    const [showInput, setShowInput] = useState(true)
 
     useEffect(() => {
         if (localPlayerData) {
@@ -114,26 +114,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     // Keyboard
     
     const [showKeyboard, setShowKeyboard] = useState(false)
-    // const [isLocalPlayerHighBet, setIsLocalPlayerHighBet] = useState(false)
-    // const [highBet, setHighBet] = useState({
-    //         player: "",
-    //         bet: 0,
-    //     })
-
-    // useEffect(() => {
-    //     if (roundData) {
-    //     setHighBet({
-    //         player: roundData.highBet.player,
-    //         bet: roundData.highBet.bet
-    //     })
-    // }
-    // }, [roundData])
-
-    // useEffect(() => {
-    //     if (localPlayerData) {
-    //         setIsLocalPlayerHighBet(localPlayerData.isHighBet)
-    //     }
-    // }, [localPlayerData])
+    const currentHighBet = currentRound.highBet.bet
 
     useEffect(() => {
             if (gamePhase.startBetting || (gamePhase.duringBetting)) { 
@@ -147,9 +128,19 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     // Messages
 
-    const [messageArray, setMessageArray] = useState(["...Waiting for Players to Join"])
+    const messageArray = useStore(store, (state) => state["currentMessage"])
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0)       // index to control which message is rendering
     const messageArrayLength = useRef(0)
+
+    const setMessageArray = (msgArray) => {
+        store.setState((state) => ({
+            ...state,
+            ["currentMessage"]: msgArray
+        }))
+    }
+
+    console.log(messageArray)
+    console.log(currentHighBet)
 
       // renders array of current messages
 
@@ -183,6 +174,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     // for currentMessage component, an array of current messages are looped through for different scenarios
 
+    const beforeStartMsg = ["Waiting for players to join ..."]
     const gameStartingMsgs = ["All Players Have Joined!", "The Game is Ready to Start!", "Get Ready for the First Category..."]
     const waitingForCategoryJudgeMsgs = ["You are the judge for this round!", "Please create a category for the round..."]
     const waitingForCategoryMsgs = ["Please wait for this round's judge to create a category", "waiting for the category..."]
@@ -250,8 +242,8 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         >
             {messages}
             {showAnswers && <AnswersList currentRound={currentRound} />}
-            {showInput && <AnswerInput type={localPlayerData?.isJudge ? 'category' : 'answers'} />}
-            {showKeyboard && <Keyboard resetTimer={resetTimer} timerOver={timerOver} />}
+            {showInput && <AnswerInput resetTimer={resetTimer} timerOver={timerOver} type={localPlayerData?.isJudge ? 'category' : 'answers'} />}
+            {showKeyboard && <Keyboard resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet}/>}
         </motion.div>
 
     )
