@@ -3,31 +3,25 @@ import { motion } from "framer-motion";
 import NumberKeyboard from "../components/NumberKeyboardLayout";
 import ControlKeyboard from "../components/ControlKeyboardLayout";
 import CurrentMessage from "../components/CurrentMessage";
+import { store } from "../store";
+import { useStore } from "@tanstack/react-store";
 
-export default function Keyboard({ isHighBet, highBetData, resetTimer, timerOver }) {
+export default function Keyboard({ resetTimer, timerOver }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
 
     const [highBet, setHighBet] = useState(false)
-    const [message, setMessage] = useState("Place Your Bet!")
+    const [message, setMessage] = useState("Place Your First Bet!")
     const [currentHighBet, setCurrentHighBet] = useState({})
 
-    useEffect(() => {
-        setHighBet(isHighBet)
-    }, [isHighBet])
-
-    useEffect(() => {
-        setCurrentHighBet(highBetData)
-    }, [highBetData])
-
-    useEffect(() => {
-        if (isHighBet) {
-            setMessage("You are the high bet! ...Waiting for a counter-bet")
-        } else {
-            setMessage(`Do you want to bet more than ${currentHighBet.bet}?`)
-        }
-    }, [isHighBet])
+    // useEffect(() => {
+    //     if (isHighBet) {
+    //         setMessage("You are the high bet! ...Waiting for a counter-bet")
+    //     } else {
+    //         setMessage(`Do you want to bet more than ${currentHighBet.bet}?`)
+    //     }
+    // }, [isHighBet])
 
     function updateInput(value) {
             if (keyboardInput === 0 && typeof value === "number") {
@@ -49,13 +43,13 @@ export default function Keyboard({ isHighBet, highBetData, resetTimer, timerOver
 
     return (
         <motion.div
-            className='keyboard'
+            id='keyboard'
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 5 }}
         >
-            <CurrentMessage message={message} endingOpacity={true}/>
-            <NumberKeyboard update={updateInput} />
+            <NumberKeyboard update={updateInput} firstNum={0} lastNum={5}/>
+            <NumberKeyboard update={updateInput} firstNum={5} lastNum={10}/>
             <ControlKeyboard currentNum={keyboardInput} update={updateInput} timerOver={timerOver} />
 
         </motion.div>

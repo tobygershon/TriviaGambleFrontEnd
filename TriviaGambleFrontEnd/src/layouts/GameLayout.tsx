@@ -130,11 +130,9 @@ export default function GameLayout() {
     return (
         <>
             <Header resetTimer={toggleTimerReset} disableSubmit={disableSubmit} players={gameData.players} />
-            <div id="columns" className="columns is-flex is-align-items-center">
-                <div className="column is-one-fifth"><SideMenu gameData={gameData} currentRound={currentRoundData} /></div>
-                <div className="column">
-                    {actionLayouts}
-                </div>
+            <div id="columns" className="">
+                <SideMenu gameData={gameData} currentRound={currentRoundData} />
+                {actionLayouts}
             </div>
             <ChatLayout />
         </>

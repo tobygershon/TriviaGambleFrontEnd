@@ -10,7 +10,7 @@ const variantsSubmit = {
     closed: {rotate: 360}
 }
 
-export default function Button({ text, btnWidth, btnHeight, btnType, data, timerOver }) {
+export default function Button({ text, btnType, data, timerOver }) {
 
     const buttonText: string = text
     const btn: string = btnType
@@ -29,8 +29,6 @@ export default function Button({ text, btnWidth, btnHeight, btnType, data, timer
             onClick={handleClick}
             style={{
                 background: btn === 'generic-btn' ? '#43BCCD' : '#662E9B',
-                // width: btnWidth,
-                // height: btnHeight,
             }}
             initial={{ opacity: 1, scale: 1, rotate: 0 }}
             whileHover={{ scale: 1.1 }}

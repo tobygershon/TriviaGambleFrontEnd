@@ -16,7 +16,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     const gameData = useStore(store, (state) => state["game"])
 
     // local player state from store
-    const localPlayerData = useStore(store, (store) => store["localPlayer"])
+    const localPlayerData = useStore(store, (state) => state["localPlayer"])
     const updateLocalPlayerData = (playerObj) => {
         store.setState((state) => ({
             ...state,
@@ -98,7 +98,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     }, [gamePhase])
 
     // Input
-    const [showInput, setShowInput] = useState(true)
+    const [showInput, setShowInput] = useState(false)
 
     useEffect(() => {
         if (localPlayerData) {

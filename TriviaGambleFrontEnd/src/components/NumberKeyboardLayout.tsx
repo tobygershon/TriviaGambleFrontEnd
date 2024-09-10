@@ -2,10 +2,9 @@ import React from "react";
 import Button from './GenericButton'
 import { motion } from "framer-motion";
 
-export default function NumberKeyboard({ update }) {
+export default function NumberKeyboard({ update, firstNum, lastNum }) {
 
-    const firstNumbers: string[] = createNumArray(0, 5)
-    const secondNumbers: string[] = createNumArray(5, 10)
+    const numbers: string[] = createNumArray(firstNum, lastNum)
 
     function createNumArray(firstNumber: number, secondNumber: number): string[] {
         const numArray: string[] = []
@@ -19,18 +18,7 @@ export default function NumberKeyboard({ update }) {
         update(parseInt(value))
     }
 
-    const firstButtons = firstNumbers.map((num) => (
-        <Button
-            data={updateData}
-            key={num}
-            text={num}
-            btnType={'generic-btn'}
-        // btnWidth={50} 
-        // btnHeight={50} 
-        />
-    ))
-
-    const secondButtons = secondNumbers.map((num) => (
+    const buttons = numbers.map((num) => (
         <Button
             data={updateData}
             key={num}
@@ -43,11 +31,8 @@ export default function NumberKeyboard({ update }) {
 
     return (
         <>
-            <div className="num-col-1">
-                {firstButtons}
-            </div>
-            <div className="num-col-2">
-                {secondButtons}
+            <div className="num-col">
+                {buttons}
             </div>
 
         </>

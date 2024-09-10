@@ -2,11 +2,20 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import TimerLayout from './TimerLayout'
 import Scoreboard from '../components/Scoreboard'
+import { store } from '../store'
+import { useStore } from '@tanstack/react-store'
 
 
 export default function Header({ resetTimer, disableSubmit, players }) {
 
-    const [showTimer, setShowTimer] = useState(true)
+    const [showTimer, setShowTimer] = useState(false)
+    const gamePhase = useStore(store, (state) => state["gamePhase"])
+
+    useEffect(() => {
+        if (gamePhase.duringAnswering || gamePhase.duringBetting) {
+            setShowTimer(true)
+        }
+    }, [gamePhase])
 
     function timerOver(isOver: boolean) {
         if (isOver) {

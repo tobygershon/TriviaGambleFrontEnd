@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react"
 import { db } from '../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
+import { store } from "../store"
+import { useStore } from "@tanstack/react-store"
 
 export default function PlayerScore({ player }) {
 
 const [playerData, setPlayerData] = useState({})
+const [isWinner, setIsWinner] = useState(false)
+const [isJudge, setIsJudge] = useState(false)
+const [isAnswering, setIsAnswering] = useState(false)
 
 useEffect(() => {
     if (player) {
@@ -18,6 +23,40 @@ useEffect(() => {
         return unsub
         }
 }, [player])
+
+    // using and setting store for winner
+    const gameData = useStore(store, (state) => state["game"])
+    const winner = gameData.winner
+
+useEffect(() => {
+    if (winner === player) {
+        updateStore("winner", playerData.name)
+        setIsWinner(true)
+    }
+}, [gameData])
+
+useEffect(() => {
+    if (playerData.isJudge) {
+        updateStore("isJudge", playerData.name)
+        setIsJudge(true)
+    } else {
+        setIsJudge(false)
+    }
+
+    if (playerData.isAnswering) {
+        updateStore("isAnswering", playerData.name)
+        setIsAnswering(true)
+    } else {
+        setIsJudge(false)
+    }
+}, [playerData])
+
+const updateStore = (field, value) => {
+    store.setState((state) => ({
+        ...state,
+        [field]: value
+    }))
+}
 
     return (
         <div className="level-item has-text-centered">

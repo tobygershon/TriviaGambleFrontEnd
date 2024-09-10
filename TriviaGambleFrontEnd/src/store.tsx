@@ -1,6 +1,9 @@
 import { Store } from "@tanstack/react-store";
 
 export const store = new Store({
+    isJudge: "",
+    winner: "",
+    isAnswering: "",
     gamePhase: {
         beforeStart: true,
         gameStarting: false,

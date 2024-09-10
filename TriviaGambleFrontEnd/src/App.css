@@ -53,25 +53,53 @@ body {
   border: solid 2px #F9C80E
 }
 
+/* center columns */
+
+#columns {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 100%;
+  gap: 1.5rem;
+  height: 60vh;
+}
 
 /* SideBar Css */
 
 #side-bar {
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  justify-content: center;
+  height: 100%;
   background-image: linear-gradient(to bottom right, #F86624, #F55A2D);
   border-radius: 1rem;
 }
 
+#side-bar-items {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 /* Action box css */
 
 #action-box {
   display: flex;
-  flex-wrap: wrap;
-  flex: 1, 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
   height: 100%;
   background-image: linear-gradient(to bottom right, #662E9B, #5D52A8);
   border-radius: 1rem;
   padding: 1rem;
   color: white;
+}
+
+#message-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
 }
 
 /* Chat box css */
@@ -81,15 +109,15 @@ body {
   height: 100px;
   flex: 1, 1, 100%;
   background-image: linear-gradient(to bottom right, #EA3546, #C9335B);
-  /* box-shadow: 1px 1px 5px black; */
   border-radius: 1rem;
+  margin-top: 1.5rem;
 }
 
 /* number keyboard css */
 
-.num-col-1, .num-col-2 {
+.num-col {
   display: flex;
-  flex-grow: 1;
+  flex: 1 1 auto;
   justify-content: space-around;
 }
 
@@ -110,11 +138,12 @@ body {
   margin-right: 1rem;
 }
 
-.keyboard, #answer-input {
+#keyboard, #answer-input {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  height: 15rem;
+  flex-shrink: 1;
+  max-height: 10rem;
   width: 100%;
   height: 100%;
   padding: 1rem;
@@ -122,6 +151,11 @@ body {
   box-shadow: 1px 1px 5px black;
   border-radius: 1rem;
   margin: 1rem;
+}
+
+#keyboard {
+  max-height: 20rem;
+  flex-direction: column;
 }
 
 #key-input-box {
@@ -145,7 +179,12 @@ body {
 /* Answer Input css */
 
 #answer-input {
-  flex-direction: column;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex: wrap;
+  width: 90%;
+  /* flex-direction: column; */
 }
 
 .text-input {
@@ -166,14 +205,39 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
-  flex-shrink: 1;
+  flex: 1 1 auto;
   border: solid 1px white;
   font-size: 2rem;
   margin: .25rem;
+  padding: 10px;
+
 }
 
 .back-btn, .submit-btn {
   font-size: 1rem;
+}
+
+@media only screen and (max-width: 950px) {
+  #columns {
+    display: flex;
+    flex-direction: column;
+  }
+  #side-bar {
+    max-height: 20%;
+  }
+
+   #side-bar-items {
+    flex-direction: row;
+  }
+
+  .text-input {
+    height: 2rem;
+    font-size: 1.25rem;
+    max-width: 100%;
+  }
+
+  .generic-btn {
+    max-width: 20%;
+  }
 }
 
