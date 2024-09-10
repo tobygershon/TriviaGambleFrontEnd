@@ -19,14 +19,14 @@ export default function Answer({ answerId }) {
         })
         return unsub
     }
-    }, [])
+    }, [answerId])
 
 
 
     return (
         <>
-        Answer: {answer.answer}
-        Status: {answer.status === true ? "Correct" : "Wrong"} // need 'pending' status as well
+        Answer: {answer ? answer.answer : "No answer yet"}
+        Status: {answer.status === true ? "Correct" : "Wrong"}
         </>
     )
 }

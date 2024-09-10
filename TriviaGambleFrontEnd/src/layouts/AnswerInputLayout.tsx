@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"; 
 import { motion } from 'framer-motion'
 import Button from "../components/GenericButton";
+import CurrentMessage from "../components/CurrentMessage";
 
 export default function AnswerInput({ type }) {
     

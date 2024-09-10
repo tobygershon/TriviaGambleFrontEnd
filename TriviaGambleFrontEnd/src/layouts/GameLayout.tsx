@@ -6,6 +6,8 @@ import Header from './HeaderLayout'
 import SideMenu from './SideMenu'
 import ActionGameLayout from './ActionGameLayout'
 import ChatLayout from './ChatLayout'
+import { useStore } from '@tanstack/react-store'
+import { store } from '../store'
 
 localStorage.setItem('localPlayer', 'W6QREIhHnX56BTxjaiqN')
 
@@ -43,18 +45,23 @@ export default function GameLayout() {
     }
 
     // current state of game below
-    const [gameData, setGameData] = useState({
-        "hasStarted": false,
-        "hasEnded": false,
-        "endingScore": 0,
-        "winner": "",
-        "players": [],
-        "rounds": []
-    })
+    const gameData = useStore(store, (state) => state["game"])
+    const updateGameData = (gameObj) => {
+        store.setState((state) => ({
+            ...state,
+            ["game"]: gameObj
+        }))
+    }
 
     const [currentRoundId, setCurrentRoundId] = useState("")
 
-    const [currentRoundData, setCurrentRoundData] = useState(false)
+    const currentRoundData = useStore(store, (state) => state["currentRound"])
+    const updateCurrentRound = (roundObj) => {
+        store.setState((state) => ({
+            ...state,
+            ["currentRound"]: roundObj
+        }))
+    }
 
 
     useEffect(() => {
@@ -85,7 +92,7 @@ export default function GameLayout() {
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "games", gameId), (snapshot) => {
             if (snapshot.data()) {
-                setGameData(snapshot.data())
+                updateGameData(snapshot.data())
             } else {
                 console.log("error retrieving game data")
             }
@@ -99,7 +106,7 @@ export default function GameLayout() {
         if (currentRoundId) {
         const unsub = onSnapshot(doc(db, "rounds", currentRoundId), (snapshot) => {
             if (snapshot.data()) {
-                setCurrentRoundData(snapshot.data())
+                updateCurrentRound(snapshot.data())
             } else {
                 console.log("error retrieving current round data")
             }
@@ -115,8 +122,6 @@ export default function GameLayout() {
         <ActionGameLayout 
             key={player}
             localPlayer={player}
-            gameData={gameData}
-            currentRound={currentRoundData}
             resetTimer={resetTimer}
             timerOver={timerIsOver} 
         />
