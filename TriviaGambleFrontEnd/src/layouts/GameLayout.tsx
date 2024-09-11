@@ -72,7 +72,7 @@ export default function GameLayout() {
         return gameData.rounds[gameData.rounds.length - 1]
     }
 
-    // timer state and functions below
+    // timer state and functions below, as well as function to update high Bet from keyboard
 
     const [toggleTimerReset, setTimerReset] = useState(false)
     const [timerIsOver, setTimerIsOver] = useState(false)
@@ -83,6 +83,10 @@ export default function GameLayout() {
 
     function disableSubmit(isOver: boolean) {
         setTimerIsOver(isOver)
+    }
+
+    function handleUpdateBet() {
+        updateHighBet(currentRoundId, )
     }
 
 
@@ -123,7 +127,7 @@ export default function GameLayout() {
             key={player}
             localPlayer={player}
             resetTimer={resetTimer}
-            timerOver={timerIsOver} 
+            timerOver={timerIsOver}
         />
     ))
 

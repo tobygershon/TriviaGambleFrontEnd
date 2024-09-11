@@ -16,15 +16,13 @@ export default function AnswerInput({ type, resetTimer, timerOver }) {
     }
 
     function handleSubmit() {
-        if (type === 'category') {
+        if (type === 'category' && textInput.trim().length > 0) {
             // call backend for judge to set category
             handleClear()
-            console.log('category submitted')
-        } else if (type === 'answers') {
+        } else if (type === 'answers' && textInput.trim().length > 0) {
             // call backend to submit answer
             handleClear()
             resetTimer()
-            console.log('answer submitted')
         } else {
             // set msg to say theres a problem?
             console.log('There was a problem with the type for the answer input submit')

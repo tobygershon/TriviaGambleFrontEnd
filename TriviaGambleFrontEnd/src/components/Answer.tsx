@@ -10,23 +10,25 @@ export default function Answer({ answerId }) {
 
     useEffect(() => {
         if (answerId) {
-        const unsub = onSnapshot(doc(db, "answers", answerId), (snapshot) => {
-            if (snapshot.data()) {
-                setAnswer(snapshot.data())
-            } else {
-                console.log("error retrieving answer")
-            }
-        })
-        return unsub
-    }
+            const unsub = onSnapshot(doc(db, "answers", answerId), (snapshot) => {
+                if (snapshot.data()) {
+                    setAnswer(snapshot.data())
+                } else {
+                    console.log("error retrieving answer")
+                }
+            })
+            return unsub
+        }
     }, [answerId])
 
 
 
     return (
-        <>
-        Answer: {answer ? answer.answer : "No answer yet"}
-        Status: {answer.status === true ? "Correct" : "Wrong"}
-        </>
+        <div className='answer'>
+            Answer: {answer ? answer.answer : "No answer yet"}
+            Status: {answer.status === true ? "Correct" : "Wrong"}
+        </div>
+
+
     )
 }

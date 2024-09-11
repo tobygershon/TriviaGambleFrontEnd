@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, doc, collection } from "firebase/firestore";
+import { getFirestore, onSnapshot, doc, collection, updateDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,10 +24,24 @@ export const db = getFirestore(app);
 
 const gamesCollectionRef = collection(db, "games");
 
+
+// not used
 export async function getGame(id) {
     const unsub = onSnapshot(doc(db, "games", id), (doc) => {
         console.log("Current data: ", doc.data());
     })
 
     unsub()
+}
+
+// method to update high bet from front end
+export async function updateHighBet(currentRoundId: string, playerName: string, highBet: number) {
+    const currentRoundDocRef = doc(db, "rounds", currentRoundId);
+
+    await updateDoc(currentRoundDocRef, {
+        highBet: {
+            bet: highBet,
+            player: playerName
+        }
+    })
 }

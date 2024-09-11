@@ -4,15 +4,16 @@ import NumberKeyboard from "../components/NumberKeyboardLayout";
 import ControlKeyboard from "../components/ControlKeyboardLayout";
 import CurrentMessage from "../components/CurrentMessage";
 import { store } from "../store";
-import { useStore } from "@tanstack/react-store";
 
-export default function Keyboard({ resetTimer, timerOver, highBet }) {
+export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, highBet }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
 
     const [message, setMessage] = useState("Place Your First Bet!")
     const [currentHighBet, setCurrentHighBet] = useState({})
+
+    console.log(highBet)
 
     // useEffect(() => {
     //     if (isHighBet) {
@@ -38,7 +39,8 @@ export default function Keyboard({ resetTimer, timerOver, highBet }) {
                 setLastInput([0])
                 if (checkIfNewBetIsHigher()) {
                     resetTimer()
-                    // send new bet to backend
+                    // update new high bet in frontend
+                    updateCurrentHighBet(keyboardInput)
                     updateMessage(['Good Bet!'])
                 } else {
                     updateMessage([`You need to bet more than ${highBet}`])

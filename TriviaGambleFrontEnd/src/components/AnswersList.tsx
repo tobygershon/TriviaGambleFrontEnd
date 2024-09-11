@@ -11,15 +11,17 @@ export default function AnswersList({ currentRound }) {
         }
     }, [currentRound])
 
-   
+
     const answersList = answers.map((answer) => (
-        <Answer key={answer} answerId={answer}/>
+        <Answer key={answer} answerId={answer} />
     ))
 
 
     return (
-        <div>
-            {answersList}
+        <div id="answers-box">
+            <div className='answers-list'>
+                {answersList}
+            </div>
         </div>
     )
 }

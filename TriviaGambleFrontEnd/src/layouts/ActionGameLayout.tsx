@@ -8,12 +8,17 @@ import CurrentMessage from "../components/CurrentMessage";
 import AnswersList from "../components/AnswersList";
 import { useStore } from "@tanstack/react-store";
 import { store } from '../store'
+import { updateHighBet } from "../services/FirestoreService";
 
 export default function ActionGameLayout({ localPlayer, resetTimer, timerOver }) {
 
     // bring in game and round state from store
     const currentRound = useStore(store, (state) => state["currentRound"])
     const gameData = useStore(store, (state) => state["game"])
+
+    function getCurrentRoundId() {
+        return gameData.rounds[gameData.rounds.length - 1]
+    }
 
     // local player state from store
     const localPlayerData = useStore(store, (state) => state["localPlayer"])
@@ -40,7 +45,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     const gamePhase = useStore(store, (state) => state["gamePhase"])
 
-    const updatePhase = (phase1, phase2) => {
+    const updatePhase = (phase1: string, phase2: string) => {
         store.setState((state) => ({
             ...state,
             ["gamePhase"]: {
@@ -98,7 +103,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     }, [gamePhase])
 
     // Input
-    const [showInput, setShowInput] = useState(true)
+    const [showInput, setShowInput] = useState(false)
 
     useEffect(() => {
         if (localPlayerData) {
@@ -113,7 +118,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
    
     // Keyboard
     
-    const [showKeyboard, setShowKeyboard] = useState(false)
+    const [showKeyboard, setShowKeyboard] = useState(true)
     const currentHighBet = currentRound.highBet.bet
 
     useEffect(() => {
@@ -125,6 +130,12 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
                 setShowKeyboard(false)
             }
     }, [gamePhase])
+
+    // method called up from keyboard to update high bet in GameLayout
+    function updateCurrentHighBet(newHighBet) {
+        const roundId = getCurrentRoundId()
+        updateHighBet(roundId, localPlayerData.name, newHighBet)
+    }
 
     // Messages
 
@@ -243,7 +254,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             {messages}
             {showAnswers && <AnswersList currentRound={currentRound} />}
             {showInput && <AnswerInput resetTimer={resetTimer} timerOver={timerOver} type={localPlayerData?.isJudge ? 'category' : 'answers'} />}
-            {showKeyboard && <Keyboard resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet}/>}
+            {showKeyboard && <Keyboard updateCurrentHighBet={updateCurrentHighBet} resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet}/>}
         </motion.div>
 
     )
