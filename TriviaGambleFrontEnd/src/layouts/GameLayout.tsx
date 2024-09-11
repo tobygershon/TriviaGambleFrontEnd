@@ -9,7 +9,7 @@ import ChatLayout from './ChatLayout'
 import { useStore } from '@tanstack/react-store'
 import { store } from '../store'
 
-localStorage.setItem('localPlayer', 'W6QREIhHnX56BTxjaiqN')
+localStorage.setItem('localPlayer', "GHsAfsJDdUXf9sNrVCwL")
 
 export default function GameLayout() {
     // gameId from url params

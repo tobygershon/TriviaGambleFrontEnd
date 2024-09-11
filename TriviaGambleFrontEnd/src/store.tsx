@@ -9,7 +9,7 @@ export const store = new Store({
     gamePhase: {
         beforeStart: true,
         gameStarting: false,
-        waitingForCategory: false, // needs to be updated to true after gameStarting messages are run, as well as after round ends to start next round
+        waitingForCategory: false,  // updated to true with end of gameStarting messages
         startBetting: false,
         duringBetting: false,
         endBetting: false,

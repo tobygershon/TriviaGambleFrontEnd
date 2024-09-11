@@ -8,13 +8,23 @@ import CurrentMessage from "../components/CurrentMessage";
 import AnswersList from "../components/AnswersList";
 import { useStore } from "@tanstack/react-store";
 import { store } from '../store'
-import { updateHighBet } from "../services/FirestoreService";
+import { updateHighBet, updateNotIsHighBet } from "../services/FirestoreService";
 
 export default function ActionGameLayout({ localPlayer, resetTimer, timerOver }) {
 
     // bring in game and round state from store
     const currentRound = useStore(store, (state) => state["currentRound"])
     const gameData = useStore(store, (state) => state["game"])
+
+    // state of current High Bet and local player's last bet
+    const currentHighBet = currentRound.highBet.bet
+    const [lastBet, setLastBet] = useState(0)
+
+    useEffect(() => {
+        if (currentHighBet > lastBet) {
+            updateNotIsHighBet(localPlayer)
+        }
+    }, [currentHighBet])
 
     function getCurrentRoundId() {
         return gameData.rounds[gameData.rounds.length - 1]
@@ -44,6 +54,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     // below the phases of game are updated in the store
 
     const gamePhase = useStore(store, (state) => state["gamePhase"])
+    console.log(gamePhase)
 
     const updatePhase = (phase1: string, phase2: string) => {
         store.setState((state) => ({
@@ -118,8 +129,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
    
     // Keyboard
     
-    const [showKeyboard, setShowKeyboard] = useState(true)
-    const currentHighBet = currentRound.highBet.bet
+    const [showKeyboard, setShowKeyboard] = useState(false)
 
     useEffect(() => {
             if (gamePhase.startBetting || (gamePhase.duringBetting)) { 
@@ -132,9 +142,10 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     }, [gamePhase])
 
     // method called up from keyboard to update high bet in GameLayout
-    function updateCurrentHighBet(newHighBet) {
+    function updateCurrentHighBet(newHighBet: number) {
         const roundId = getCurrentRoundId()
-        updateHighBet(roundId, localPlayerData.name, newHighBet)
+        updateHighBet(roundId, localPlayer, localPlayerData.name, newHighBet)
+        setLastBet(newHighBet)
     }
 
     // Messages
@@ -150,19 +161,32 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         }))
     }
 
-    console.log(messageArray)
-    console.log(currentHighBet)
-
       // renders array of current messages
 
-     const messages = messageArray.map((message, index) => (
-         currentMessageIndex === index &&
-         <CurrentMessage
-              key={index}
-              message={message}
-              endingOpacity={index === messageArrayLength.current - 1 ? true : false}
-          />
-      ))
+     const messages = messageArray.map((message, index) => {
+        if (message) {
+        return currentMessageIndex === index &&
+                            <CurrentMessage
+                                key={index}
+                                message={message}
+                                endingOpacity={index === messageArrayLength.current - 1 ? true : false}
+                            />
+        } else {
+        return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
+        }
+      })
+
+      // Below method updates phase when only messages are run
+
+      function updatePhaseFromMsgArrayEnding() {
+        if (gamePhase.gameStarting) {
+            updatePhase("gameStarting", "waitingForCategory")
+        } else if (gamePhase.endBetting) {
+            updatePhase("endBetting", "startAnswering")
+        } else if (gamePhase.startAnswering) {
+            updatePhase("startAnswering", "duringAnswering")
+        }
+      }
 
     //effect loops through current message array and renders subsequent components every 3sec
 
@@ -185,19 +209,16 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     // for currentMessage component, an array of current messages are looped through for different scenarios
 
-    const beforeStartMsg = ["Waiting for players to join ..."]
-    const gameStartingMsgs = ["All Players Have Joined!", "The Game is Ready to Start!", "Get Ready for the First Category..."]
+    const gameStartingMsgs = ["All Players Have Joined!", "The Game is Ready to Start!", "Get Ready for the First Category...", false]
     const waitingForCategoryJudgeMsgs = ["You are the judge for this round!", "Please create a category for the round..."]
     const waitingForCategoryMsgs = ["Please wait for this round's judge to create a category", "waiting for the category..."]
-    const startBettingMsgs = currentRound ? [`This round's category is ${currentRound.category}!`, `How many ${currentRound.category} do you think you can think of?`, "Get Ready to Bet!", "Start Betting!"]
-                                        : [`This round's category is chosen!`, "...waiting to load"]
+    const startBettingMsgs = [`This round's category is ${currentRound.category}!`, `How many ${currentRound.category} do you think you can think of?`, "Get Ready to Bet!", "Start Betting!"]
     const duringBettingMsgs =["Either bet higher, or let your opponent try to match their bet"]
-    const endBettingMsgs = currentRound ? ["The betting is over!", `${currentRound.highBet.player} has the high bet of ${currentRound.highBet.bet}!`]
-                                        : ["The betting is over!", `...determining high bet`]
-    const startAnsweringHighBetMsgs = ["Get ready to start answering!", "Get set!", "Go! Start entering your answers"]
-    const startAnsweringMsgs = currentRound ? [`${currentRound.highBet.player} is getting ready to start answering...`]
-                                            : [`getting ready to start answering...`]
-    const duringAnsweringMsgs = [""]
+    const endBettingMsgs = ["The betting is over!", `${currentRound.highBet.player} has the high bet of ${currentRound.highBet.bet}!`, false]
+    const startAnsweringHighBetMsgs = ["Get ready to start answering!", "Get set!", false]
+    const startAnsweringMsgs = [`${currentRound.highBet.player} is getting ready to start answering...`, false]
+    const duringAnsweringMsgsIsAnswering = ["Go! Start entering your answers before the timer expires!"]
+    const duringAnsweringMsgsOthers = [`Watch while ${currentRound.highBet.player} tries to get more than ${currentRound.highBet.bet} answers!`]
     // const endAnsweringWinningMsgs = ["The Timer is Over!", `Great Job ${currentRound.highBet.player}!`, `You got ${currentRound.highBet.bet} answers correct!`, "You win a point for the round!"]
     // const endAnsweringLosingMsgs = ["The Timer is Over!", `Sorry ${currentRound.highBet.player}, you couldn't reach ${currentRound.highBet.bet} answers`, "Your opponent gets a point for the round"]
     const waitingForJudgeMsgs = ["We are waiting for the judge to to determine if some answers are correct..."]

@@ -13,8 +13,6 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
     const [message, setMessage] = useState("Place Your First Bet!")
     const [currentHighBet, setCurrentHighBet] = useState({})
 
-    console.log(highBet)
-
     // useEffect(() => {
     //     if (isHighBet) {
     //         setMessage("You are the high bet! ...Waiting for a counter-bet")
@@ -45,7 +43,7 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                 } else {
                     updateMessage([`You need to bet more than ${highBet}`])
                 }
-                
+                console.log(typeof keyboardInput)
                 
             }
     }
@@ -63,7 +61,7 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
             id='keyboard'
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 5 }}
+            transition={{ duration: 2 }}
         >
             <NumberKeyboard update={updateInput} firstNum={0} lastNum={5}/>
             <NumberKeyboard update={updateInput} firstNum={5} lastNum={10}/>

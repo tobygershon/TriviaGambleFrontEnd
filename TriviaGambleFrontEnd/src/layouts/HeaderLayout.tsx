@@ -8,11 +8,14 @@ import { useStore } from '@tanstack/react-store'
 
 export default function Header({ resetTimer, disableSubmit, players }) {
 
-    const [showTimer, setShowTimer] = useState(true)
+    const [showTimer, setShowTimer] = useState(false)
     const gamePhase = useStore(store, (state) => state["gamePhase"])
+    const localPlayerData = useStore(store, (state) => state["localPlayer"])
 
     useEffect(() => {
-        if (gamePhase.duringAnswering || gamePhase.duringBetting) {
+        if (gamePhase.duringBetting && !localPlayerData.isHighBet) {
+            setShowTimer(true)
+        } else if (gamePhase.duringAnswering && localPlayerData.isAnswering) {
             setShowTimer(true)
         }
     }, [gamePhase])

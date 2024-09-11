@@ -34,14 +34,29 @@ export async function getGame(id) {
     unsub()
 }
 
-// method to update high bet from front end
-export async function updateHighBet(currentRoundId: string, playerName: string, highBet: number) {
+// method to update high bet from front end for both round and player docs
+export function updateHighBet(currentRoundId: string, playerId: string, playerName: string, highBet: number) {
     const currentRoundDocRef = doc(db, "rounds", currentRoundId);
+    const playerDocRef = doc(db, "players", playerId)
 
-    await updateDoc(currentRoundDocRef, {
+    updateDoc(currentRoundDocRef, {
         highBet: {
             bet: highBet,
             player: playerName
         }
+    })
+
+    updateDoc(playerDocRef, {
+        isHighBet: true
+    })
+}
+
+// method to update isHighBet: false after other player bets higher
+
+export function updateNotIsHighBet(playerId: string) {
+    const playerDocRef = doc(db, "players", playerId)
+
+    updateDoc(playerDocRef, {
+        isHighBet: false
     })
 }
