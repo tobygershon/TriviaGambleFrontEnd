@@ -13,12 +13,17 @@ export default function Header({ resetTimer, disableSubmit, players }) {
     const localPlayerData = useStore(store, (state) => state["localPlayer"])
 
     useEffect(() => {
-        if (gamePhase.duringBetting && !localPlayerData.isHighBet) {
-            setShowTimer(true)
+        if (gamePhase.duringBetting) {
+            if (!localPlayerData.isHighBet) {
+                setShowTimer(true)
+            } else {
+                setShowTimer(false)
+            }
+            
         } else if (gamePhase.duringAnswering && localPlayerData.isAnswering) {
-            setShowTimer(true)
+            setShowTimer(true)  //May need to reset showTimer to false here
         }
-    }, [gamePhase])
+    }, [gamePhase, localPlayerData])
 
     function timerOver(isOver: boolean) {
         if (isOver) {
@@ -42,7 +47,7 @@ export default function Header({ resetTimer, disableSubmit, players }) {
                 
                 <div className="level-item has-text-centered is-flex is-justify-content-left">
                     <div id='logo-box'>
-                        { showTimer ? <TimerLayout handleTimerOver={timerOver} resetTimer={resetTimer} /> 
+                        { showTimer ? <TimerLayout startNum={10} handleTimerOver={timerOver} resetTimer={resetTimer} /> 
                         : <motion.img 
                             id='logo-img' 
                             src='/T.png' 

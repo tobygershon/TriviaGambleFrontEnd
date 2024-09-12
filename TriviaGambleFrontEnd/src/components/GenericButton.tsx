@@ -20,7 +20,7 @@ export default function Button({ text, btnType, data, timerOver }) {
     function handleClick() {
         setBtnClicked(btnClicked => !btnClicked)
         setTimeout(() => setBtnClicked(btnClicked => !btnClicked), 500)
-        data(text)
+        data(text) 
     }
 
     return (

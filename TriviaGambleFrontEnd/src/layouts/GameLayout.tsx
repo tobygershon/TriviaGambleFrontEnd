@@ -9,7 +9,7 @@ import ChatLayout from './ChatLayout'
 import { useStore } from '@tanstack/react-store'
 import { store } from '../store'
 
-localStorage.setItem('localPlayer', "GHsAfsJDdUXf9sNrVCwL")
+localStorage.setItem('localPlayer', "An4K8GvP6FdWqYQeONo0")
 
 export default function GameLayout() {
     // gameId from url params
@@ -44,6 +44,35 @@ export default function GameLayout() {
         "answers": string[]
     }
 
+        // below are the onSnapshot effects to update real time info
+
+    // update game info
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, "games", gameId), (snapshot) => {
+            if (snapshot.data()) {
+                updateGameData(snapshot.data())
+            } else {
+                console.log("error retrieving game data")
+            }
+        })
+        return unsub
+    }, [])
+
+    // update current round info
+    const [currentRoundId, setCurrentRoundId] = useState("")
+    useEffect(() => {
+        if (currentRoundId) {
+        const unsub = onSnapshot(doc(db, "rounds", currentRoundId), (snapshot) => {
+            if (snapshot.data()) {
+                updateCurrentRound(snapshot.data())
+            } else {
+                console.log("error retrieving current round data")
+            }
+    })
+    return unsub
+}
+}, [currentRoundId])
+
     // current state of game below
     const gameData = useStore(store, (state) => state["game"])
     const updateGameData = (gameObj) => {
@@ -52,8 +81,6 @@ export default function GameLayout() {
             ["game"]: gameObj
         }))
     }
-
-    const [currentRoundId, setCurrentRoundId] = useState("")
 
     const currentRoundData = useStore(store, (state) => state["currentRound"])
     const updateCurrentRound = (roundObj) => {
@@ -84,40 +111,6 @@ export default function GameLayout() {
     function disableSubmit(isOver: boolean) {
         setTimerIsOver(isOver)
     }
-
-    function handleUpdateBet() {
-        updateHighBet(currentRoundId, )
-    }
-
-
-    // below are the onSnapshot effects to update real time info
-
-    // update game info
-    useEffect(() => {
-        const unsub = onSnapshot(doc(db, "games", gameId), (snapshot) => {
-            if (snapshot.data()) {
-                updateGameData(snapshot.data())
-            } else {
-                console.log("error retrieving game data")
-            }
-        })
-        return unsub
-    }, [])
-
-    // update current round info
-
-    useEffect(() => {
-        if (currentRoundId) {
-        const unsub = onSnapshot(doc(db, "rounds", currentRoundId), (snapshot) => {
-            if (snapshot.data()) {
-                updateCurrentRound(snapshot.data())
-            } else {
-                console.log("error retrieving current round data")
-            }
-    })
-    return unsub
-}
-}, [currentRoundId])
 
     // map ActionGameLayout components for each player to render if player stored in localstorage matches player
 

@@ -42,9 +42,7 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                     updateMessage(['Good Bet!'])
                 } else {
                     updateMessage([`You need to bet more than ${highBet}`])
-                }
-                console.log(typeof keyboardInput)
-                
+                } 
             }
     }
 

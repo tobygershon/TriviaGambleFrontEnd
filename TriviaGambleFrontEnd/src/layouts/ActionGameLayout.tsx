@@ -30,6 +30,18 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         return gameData.rounds[gameData.rounds.length - 1]
     }
 
+    // subscribe to changes in localPlayer doc
+    useEffect(() => {
+        const unsub = onSnapshot(doc(db, "players", localPlayer), (doc) => {
+            if (doc.data()) {
+                updateLocalPlayerData(doc.data())
+            } else {
+                console.log("error retrieving player data in action layout")
+            }
+        })
+        return unsub
+    }, [])
+
     // local player state from store
     const localPlayerData = useStore(store, (state) => state["localPlayer"])
     const updateLocalPlayerData = (playerObj) => {
@@ -91,7 +103,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }
             // change to end betting phase when isBetting is updated to false
             if (gamePhase.duringBetting && !currentRound.isBetting) {
-                updatePhase("duringBetting", "endBetting")
+                setTimeout(() => updatePhase("duringBetting", "endBetting"), 1000)
             }
 
             // change to endAnswering phase after round isOver
@@ -172,7 +184,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
                                 endingOpacity={index === messageArrayLength.current - 1 ? true : false}
                             />
         } else {
-        return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
+            return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
         }
       })
 
@@ -182,9 +194,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         if (gamePhase.gameStarting) {
             updatePhase("gameStarting", "waitingForCategory")
         } else if (gamePhase.endBetting) {
-            updatePhase("endBetting", "startAnswering")
-        } else if (gamePhase.startAnswering) {
-            updatePhase("startAnswering", "duringAnswering")
+            updatePhase("endBetting", "duringAnswering")
         }
       }
 
@@ -214,9 +224,8 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     const waitingForCategoryMsgs = ["Please wait for this round's judge to create a category", "waiting for the category..."]
     const startBettingMsgs = [`This round's category is ${currentRound.category}!`, `How many ${currentRound.category} do you think you can think of?`, "Get Ready to Bet!", "Start Betting!"]
     const duringBettingMsgs =["Either bet higher, or let your opponent try to match their bet"]
-    const endBettingMsgs = ["The betting is over!", `${currentRound.highBet.player} has the high bet of ${currentRound.highBet.bet}!`, false]
-    const startAnsweringHighBetMsgs = ["Get ready to start answering!", "Get set!", false]
-    const startAnsweringMsgs = [`${currentRound.highBet.player} is getting ready to start answering...`, false]
+    const endBettingMsgsHighBet = ["The betting is over!", `Congratulations! You have the high bet of ${currentRound.highBet.bet}!`, "Get ready to start answering!", "Get set!", false]
+    const endBettingMsgsOthers = ["The betting is over!", `${currentRound.highBet.player} has the high bet of ${currentRound.highBet.bet}!`, `${currentRound.highBet.player} is getting ready to start answering...`, false]
     const duringAnsweringMsgsIsAnswering = ["Go! Start entering your answers before the timer expires!"]
     const duringAnsweringMsgsOthers = [`Watch while ${currentRound.highBet.player} tries to get more than ${currentRound.highBet.bet} answers!`]
     // const endAnsweringWinningMsgs = ["The Timer is Over!", `Great Job ${currentRound.highBet.player}!`, `You got ${currentRound.highBet.bet} answers correct!`, "You win a point for the round!"]
@@ -240,17 +249,21 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         } else if (gamePhase.duringBetting) {
             setMessageArray(duringBettingMsgs)
         } else if (gamePhase.endBetting) {
-            setMessageArray(endBettingMsgs)
-        } else if (gamePhase.startAnswering) {
             if (localPlayerData) {
                 if (localPlayerData.isAnswering) {
-                    setMessageArray(startAnsweringHighBetMsgs)
+                    setMessageArray(endBettingMsgsHighBet)
                 } else {
-                    setMessageArray(startAnsweringMsgs)
+                    setMessageArray(endBettingMsgsOthers)
                 }
             }
         } else if (gamePhase.duringAnswering) {
-            setMessageArray(duringAnsweringMsgs)
+            if (localPlayerData) {
+                if (localPlayerData.isAnswering) {
+                    setMessageArray(duringAnsweringMsgsIsAnswering)
+                } else {
+                    setMessageArray(duringAnsweringMsgsOthers)
+                }
+            }
         } else if (gamePhase.endAnswering) {
             // need conditional logic to set msg based on if wins or loses
         } else if (gamePhase.waitingForJudge) {

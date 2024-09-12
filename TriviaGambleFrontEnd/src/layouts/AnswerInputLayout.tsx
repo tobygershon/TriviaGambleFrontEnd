@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react"; 
+import { useParams } from "react-router-dom";
 import { motion } from 'framer-motion'
 import Button from "../components/GenericButton";
-import CurrentMessage from "../components/CurrentMessage";
+import { createNewCategory, addAnswer } from "../services/BackEndService";
 
 export default function AnswerInput({ type, resetTimer, timerOver }) {
-    
+
+    const gameId = useParams().gameId
     const [textInput, setTextInput] = useState("")
 
     function handleInputChange(event) {
@@ -15,17 +17,19 @@ export default function AnswerInput({ type, resetTimer, timerOver }) {
         setTextInput('')
     }
 
-    function handleSubmit() {
+    function handleSubmit(value) {
         if (type === 'category' && textInput.trim().length > 0) {
-            // call backend for judge to set category
+            createNewCategory(gameId, textInput)
             handleClear()
+            console.log('type from category: ' + value)
         } else if (type === 'answers' && textInput.trim().length > 0) {
-            // call backend to submit answer
+            addAnswer(gameId, textInput)
             handleClear()
             resetTimer()
+            console.log('type from answers: ' + value)
         } else {
             // set msg to say theres a problem?
-            console.log('There was a problem with the type for the answer input submit')
+            console.log('There was a problem with the type for the answer input submit, or submitted text length of 0')
         }
     }
 

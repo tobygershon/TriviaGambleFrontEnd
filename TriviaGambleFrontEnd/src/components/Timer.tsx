@@ -6,12 +6,11 @@ export default function Timer({ number }) {
     return (
             <motion.div
                 id='timer'
-                // initial={{scale: 1}}
                 animate={{
-                    borderRadius: ['20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%', '40%', '20%'],
-                    scale: [1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1, 1.25, 1]
+                    borderRadius: ['20%', '40%', '20%'],
+                    scale: [1, 1.25, 1]
                 }}
-                transition={{ duration: 6 }}
+                transition={{ duration: 1 }}
             >
                 <motion.div
                     initial={{ opacity: 0 }}
