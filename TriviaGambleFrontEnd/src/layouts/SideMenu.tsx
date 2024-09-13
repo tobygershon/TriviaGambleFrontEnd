@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 
 export default function SideMenu({ gameData, currentRound }) {
 
-    const [showMenu, setShowMenu] = useState(false)
+    const [showMenu, setShowMenu] = useState(true)
 
-    return (
+    if (showMenu) {
+        return (
 
         <motion.aside
             id='side-bar'
-            className={''}
             initial={{ opacity: 0, scale: .7 }}
             animate={{
                 opacity: [0, 0, 1, 1, 1],
@@ -20,8 +20,8 @@ export default function SideMenu({ gameData, currentRound }) {
             <div id="side-bar-items" className="is-flex mx-2 my-2">
                 <p className="menu-label">Game Stats</p>
                 <ul className="menu-list">
-                    <li>Round</li>
-                    <li>Current Judge</li>
+                    <li>Current Round: {gameData.rounds.length}</li>
+                    <li>Score to Win: {gameData.endingScore}</li>
                 </ul>
                 <p className="menu-label">Save and Leave Game</p>
                 <ul className="menu-list">
@@ -39,4 +39,21 @@ export default function SideMenu({ gameData, currentRound }) {
         </motion.aside>
 
     )
+} else {
+    return (
+        <motion.div
+            className="mobile-bar is-flex is-justify-content-space-between"
+            initial={{ opacity: 0, scale: .7 }}
+            animate={{
+                opacity: [0, 0, 1, 1, 1],
+                scale: [.7, .7, 1, 1, 1]
+            }}
+            transition={{ duration: 2 }}
+            >
+            <span>Current Round: {gameData.rounds.length}</span>
+            <span>Score to Win: {gameData.endingScore}</span>
+            <i className="fa-solid fa-bars"></i>
+        </motion.div>
+    )
+}
 }

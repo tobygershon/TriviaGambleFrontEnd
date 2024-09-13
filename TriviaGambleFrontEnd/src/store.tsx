@@ -5,7 +5,7 @@ export const store = new Store({
     currentMessage: ["Waiting for players to join ..."],
     isJudge: "",
     winner: "",
-    isAnswering: "",
+    isHighBet: "",
     gamePhase: {
         beforeStart: true,
         gameStarting: false,
@@ -33,6 +33,7 @@ export const store = new Store({
         players: [],
         rounds: [],
         winner: "",
+        chat: ""
     },
     currentRound: {
         answers: [],

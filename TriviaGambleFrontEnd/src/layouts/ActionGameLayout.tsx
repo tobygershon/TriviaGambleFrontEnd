@@ -51,18 +51,6 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         }))
     }
 
-    // subscribe to changes in localPlayer doc
-    useEffect(() => {
-        const unsub = onSnapshot(doc(db, "players", localPlayer), (doc) => {
-            if (doc.data()) {
-                updateLocalPlayerData(doc.data())
-            } else {
-                console.log("error retrieving player data in action layout")
-            }
-        })
-        return unsub
-    }, [])
-
     // below the phases of game are updated in the store
 
     const gamePhase = useStore(store, (state) => state["gamePhase"])
@@ -103,7 +91,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }
             // change to end betting phase when isBetting is updated to false
             if (gamePhase.duringBetting && !currentRound.isBetting) {
-                setTimeout(() => updatePhase("duringBetting", "endBetting"), 1000)
+                updatePhase("duringBetting", "endBetting")
             }
 
             // change to endAnswering phase after round isOver
@@ -250,7 +238,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             setMessageArray(duringBettingMsgs)
         } else if (gamePhase.endBetting) {
             if (localPlayerData) {
-                if (localPlayerData.isAnswering) {
+                if (localPlayerData.isHighBet) {
                     setMessageArray(endBettingMsgsHighBet)
                 } else {
                     setMessageArray(endBettingMsgsOthers)
@@ -258,7 +246,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }
         } else if (gamePhase.duringAnswering) {
             if (localPlayerData) {
-                if (localPlayerData.isAnswering) {
+                if (localPlayerData.isHighBet) {
                     setMessageArray(duringAnsweringMsgsIsAnswering)
                 } else {
                     setMessageArray(duringAnsweringMsgsOthers)

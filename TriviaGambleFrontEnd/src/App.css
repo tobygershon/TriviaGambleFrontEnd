@@ -107,11 +107,37 @@ body {
 
 #chat-box {
   display: flex;
-  height: 100px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 150px;
   flex: 1, 1, 100%;
   background-image: linear-gradient(to bottom right, #EA3546, #C9335B);
   border-radius: 1rem;
   margin-top: 1.5rem;
+  color: white;
+  font-size: large;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+#chat-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid .5px white;
+  position: sticky;
+  width: 90%;
+
+}
+
+#chat-div {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 90%;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: white rgb(0,0,0,0)
 }
 
 /* number keyboard css */
@@ -164,7 +190,7 @@ body {
 .answers-list {
   overflow: auto;
   scrollbar-width: thin;
-  scrollbar-color: #662E9B rgb(0,0,0,0) ;
+  scrollbar-color: #662E9B rgb(0,0,0,0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -245,6 +271,8 @@ body {
   #columns {
     display: flex;
     flex-direction: column;
+    max-height: 100%;
+    min-height: 20vh;
   }
   #side-bar {
     max-height: 20%;

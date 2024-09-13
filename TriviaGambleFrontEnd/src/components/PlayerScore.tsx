@@ -9,7 +9,7 @@ export default function PlayerScore({ player }) {
 const [playerData, setPlayerData] = useState({})
 const [isWinner, setIsWinner] = useState(false)
 const [isJudge, setIsJudge] = useState(false)
-const [isAnswering, setIsAnswering] = useState(false)
+const [isHighBet, setIsHighBet] = useState(false)
 
 useEffect(() => {
     if (player) {
@@ -43,11 +43,11 @@ useEffect(() => {
         setIsJudge(false)
     }
 
-    if (playerData.isAnswering) {
-        updateStore("isAnswering", playerData.name)
-        setIsAnswering(true)
+    if (playerData.isHighBet) {
+        updateStore("isHighBet", playerData.name)
+        setIsHighBet(true)
     } else {
-        setIsJudge(false)
+        setIsHighBet(false)
     }
 }, [playerData])
 
@@ -60,9 +60,10 @@ const updateStore = (field, value) => {
 
     return (
         <div className="level-item has-text-centered">
-            <div>
+            <div className="is-flex is-flex-direction-column is-justify-content-stretch">
                 <p className="heading">{playerData.name}</p>
                 <p className="title">{playerData.score}</p>
+                <span></span>
             </div>
         </div>
     )

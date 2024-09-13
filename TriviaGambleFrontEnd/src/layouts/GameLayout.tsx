@@ -9,7 +9,7 @@ import ChatLayout from './ChatLayout'
 import { useStore } from '@tanstack/react-store'
 import { store } from '../store'
 
-localStorage.setItem('localPlayer', "An4K8GvP6FdWqYQeONo0")
+localStorage.setItem('localPlayer', "ExGduIiT50hjPZw1lfkc")
 
 export default function GameLayout() {
     // gameId from url params
@@ -57,6 +57,8 @@ export default function GameLayout() {
         })
         return unsub
     }, [])
+
+    
 
     // update current round info
     const [currentRoundId, setCurrentRoundId] = useState("")
@@ -131,7 +133,7 @@ export default function GameLayout() {
                 <SideMenu gameData={gameData} currentRound={currentRoundData} />
                 {actionLayouts}
             </div>
-            <ChatLayout />
+            <ChatLayout chatId={gameData.chat} />
         </>
     )
 

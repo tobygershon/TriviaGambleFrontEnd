@@ -36,7 +36,7 @@ export default function Header({ resetTimer, disableSubmit, players }) {
             
         <motion.nav 
             id='header'
-            className="level is-mobile"
+            className="level is-mobile pr-2"
             initial={{ opacity: 0, scale: .7 }}
             animate={{
                 opacity: [0, 1, 1, 1, 1],
