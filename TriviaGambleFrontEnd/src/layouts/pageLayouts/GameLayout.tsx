@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { onSnapshot, doc } from 'firebase/firestore'
-import { db } from '../services/FirestoreService'
-import Header from './HeaderLayout'
-import SideMenu from './SideMenu'
-import ActionGameLayout from './ActionGameLayout'
-import ChatLayout from './ChatLayout'
+import { db } from '../../services/FirestoreService'
+import Header from '../componentLayouts/HeaderLayout'
+import SideMenu from '../componentLayouts/SideMenu'
+import ActionGameLayout from '../componentLayouts/ActionGameLayout'
+import ChatLayout from '../componentLayouts/ChatLayout'
 import { useStore } from '@tanstack/react-store'
-import { store } from '../store'
+import { store } from '../../store'
 
-localStorage.setItem('localPlayer', "ExGduIiT50hjPZw1lfkc")
+localStorage.setItem('localPlayer', "DJUdSFNmaIP3CoVFCsSj")
 
 export default function GameLayout() {
     // gameId from url params

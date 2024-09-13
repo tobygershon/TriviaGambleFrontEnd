@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import NumberKeyboard from "../components/NumberKeyboardLayout";
-import ControlKeyboard from "../components/ControlKeyboardLayout";
-import CurrentMessage from "../components/CurrentMessage";
-import { store } from "../store";
+import NumberKeyboard from "./NumberKeyboardLayout";
+import ControlKeyboard from "./ControlKeyboardLayout";
+import CurrentMessage from "../generalComponents/CurrentMessage";
+import { store } from "../../store";
 
 export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, highBet }) {
 

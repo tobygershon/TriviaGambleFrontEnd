@@ -1,5 +1,5 @@
 import React from "react";
-import Button from './GenericButton'
+import Button from '../generalComponents/GenericButton'
 import { motion } from "framer-motion";
 
 export default function NumberKeyboard({ update, firstNum, lastNum }) {

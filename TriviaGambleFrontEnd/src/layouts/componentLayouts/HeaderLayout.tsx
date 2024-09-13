@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import TimerLayout from './TimerLayout'
-import Scoreboard from '../components/Scoreboard'
-import { store } from '../store'
+import TimerLayout from '../../components/timerComponents/TimerLayout'
+import Scoreboard from '../../components/headerComponents/Scoreboard'
+import { store } from '../../store'
 import { useStore } from '@tanstack/react-store'
 
 

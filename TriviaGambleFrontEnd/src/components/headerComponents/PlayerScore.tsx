@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { db } from '../services/FirestoreService'
+import { db } from '../../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
-import { store } from "../store"
+import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
 
 export default function PlayerScore({ player }) {

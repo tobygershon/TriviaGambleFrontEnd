@@ -1,5 +1,5 @@
 import PlayerScore from "./PlayerScore"
-import { store } from "../store"
+import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
 
 export default function Scoreboard({ players }) {

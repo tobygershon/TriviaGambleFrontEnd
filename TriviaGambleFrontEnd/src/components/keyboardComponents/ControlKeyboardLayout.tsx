@@ -1,5 +1,5 @@
 import React from "react";
-import Button from './GenericButton'
+import Button from '../generalComponents/GenericButton'
 import KeyboardInput from "./KeyboardInput";
 
 export default function ControlKeyboard({ update, currentNum, timerOver }) {

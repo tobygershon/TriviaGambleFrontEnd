@@ -118,22 +118,22 @@ body {
   color: white;
   font-size: large;
   overflow: hidden;
-  padding: 1rem;
+  padding: .5rem;
 }
 
 #chat-header {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   border-bottom: solid .5px white;
   position: sticky;
-  width: 90%;
-
+  width: 95%;
+  padding-bottom: .5rem;
 }
 
 #chat-div {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 85%;
   height: 90%;
   overflow: auto;
   scrollbar-width: thin;
@@ -240,12 +240,21 @@ body {
   height:3rem;
   border: 2px solid aliceblue;
   border-radius: 1rem;
-  background: #43BCCD;
-  color: #F9C80E;
   font-size: 2rem;
   font-weight: 700;
   padding: 10px 20px;
   box-shadow: 1px 1px 5px black;
+  background: #43BCCD;
+  color: #F9C80E;
+}
+
+#chat-input {
+  background: white;
+  color: black;
+  height: 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-left: 1rem;
 }
 
 /* Button css */

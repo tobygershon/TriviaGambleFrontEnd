@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { db } from '../services/FirestoreService'
+import { db } from '../../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
 
 export default function Answer({ answerId }) {

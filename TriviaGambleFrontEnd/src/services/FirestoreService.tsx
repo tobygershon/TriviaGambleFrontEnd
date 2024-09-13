@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, doc, collection, updateDoc } from "firebase/firestore";
+import { getFirestore, onSnapshot, doc, collection, updateDoc, arrayUnion } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -58,5 +58,15 @@ export function updateNotIsHighBet(playerId: string) {
 
     updateDoc(playerDocRef, {
         isHighBet: false
+    })
+}
+
+// method to send new chat to chat doc
+
+export function sendChat(text: string, chatId: string) {
+    const chatDocRef = doc(db, "chats", chatId)
+
+    updateDoc(chatDocRef, {
+        messages: arrayUnion(text)
     })
 }

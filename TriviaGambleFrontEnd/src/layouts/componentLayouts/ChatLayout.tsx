@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { onSnapshot, doc } from "firebase/firestore";
-import { db } from "../services/FirestoreService";
+import { db } from "../../services/FirestoreService";
+import GenericButton from '../../components/generalComponents/GenericButton'
+import { sendChat } from "../../services/FirestoreService";
 
 export default function ChatLayout({ chatId }) {
 
-    console.log(chatId)
+    const [chatInput, setChatInput] = useState("")
 
     const [chats, setChats] = useState([""])
 
@@ -23,6 +25,26 @@ export default function ChatLayout({ chatId }) {
         return unsub
     }
     }, [chatId])
+
+    // text input change fx
+    function handleChange(event) {
+        setChatInput(event.target.value)
+    }
+
+    // button functions
+
+    function handleClear() {
+        setChatInput("")
+    }
+
+    function handleSend() {
+        if (chatId) {
+        sendChat(chatInput, chatId)
+        } else {
+            console.log("no chatId available to send chat")
+        }
+        handleClear()
+    }
 
     const chatsArray = () => {
         if (chats.length > 1) {
@@ -44,7 +66,9 @@ export default function ChatLayout({ chatId }) {
         >
             <div id="chat-header" >
                 <h6>Game Chat</h6>
-                <input type="text" placeholder="message"></input>
+                <input id="chat-input" className="text-input" type="text" value={chatInput} onChange={handleChange} placeholder="message"></input>
+                <GenericButton text="Clear" data={handleClear} />
+                <GenericButton text="Send" data={handleSend} />
             </div>
             <div id="chat-div">
                 

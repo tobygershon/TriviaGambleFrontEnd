@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"; 
 import { useParams } from "react-router-dom";
 import { motion } from 'framer-motion'
-import Button from "../components/GenericButton";
-import { createNewCategory, addAnswer } from "../services/BackEndService";
+import Button from "../generalComponents/GenericButton";
+import { createNewCategory, addAnswer } from "../../services/BackEndService";
 
 export default function AnswerInput({ type, resetTimer, timerOver }) {
 

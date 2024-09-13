@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Timer from "../components/Timer";
-import TimerFinal from "../components/TimerSubsequent";
+import { AnimatePresence } from "framer-motion";
+import Timer from "./Timer";
+import TimerFinal from "./TimerSubsequent";
 
 export default function TimerLayout({ resetTimer, handleTimerOver, startNum }) {
 
