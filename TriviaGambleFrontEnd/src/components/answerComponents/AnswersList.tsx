@@ -12,8 +12,8 @@ export default function AnswersList({ currentRound }) {
     }, [currentRound])
 
 
-    const answersList = answers.map((answer) => (
-        <Answer key={answer} answerId={answer} />
+    const answersList = answers.map((answer, index) => (
+        <Answer key={answer} answerId={answer} count={index + 1} />
     ))
 
 

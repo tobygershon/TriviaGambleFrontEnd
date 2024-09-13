@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { db } from '../../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
 
-export default function Answer({ answerId }) {
+export default function Answer({ answerId, count }) {
 
     const [answer, setAnswer] = useState("")
 
@@ -25,8 +25,11 @@ export default function Answer({ answerId }) {
 
     return (
         <div className='answer'>
-            Answer: {answer ? answer.answer : "No answer yet"}
-            Status: {answer.status === true ? "Correct" : "Wrong"}
+            <div>{count}</div>
+            <p>{answer.answer}</p>
+            {answer.status && <p>Correct</p>}
+            {!answer.status && <p>Wrong</p>}
+            {answer.status === 'PENDING' && <p>{answer.status}</p>}
         </div>
 
 
