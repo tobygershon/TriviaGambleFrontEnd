@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } 
 import GeneralLayout from "./layouts/pageLayouts/GeneralLayout"
 import GameLayout from "./layouts/pageLayouts/GameLayout"
 import HomeLayout from "./layouts/pageLayouts/HomeLayout"
+import { loader as homeLoader } from "./layouts/pageLayouts/HomeLayout"
 
 import './App.css'
 
@@ -10,7 +11,7 @@ function App() {
       const router = createBrowserRouter(createRoutesFromElements(
 
       <Route path="/" element={<GeneralLayout />} >
-        <Route path="" element={<HomeLayout />}/>
+        <Route path="" element={<HomeLayout />} loader={homeLoader}/>
         <Route path="/:gameId" element={<GameLayout />}/>
       </Route>
      

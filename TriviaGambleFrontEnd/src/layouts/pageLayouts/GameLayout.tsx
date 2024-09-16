@@ -9,8 +9,6 @@ import ChatLayout from '../componentLayouts/ChatLayout'
 import { useStore } from '@tanstack/react-store'
 import { store } from '../../store'
 
-localStorage.setItem('localPlayer', "DJUdSFNmaIP3CoVFCsSj")
-
 export default function GameLayout() {
     // gameId from url params
     const gameId: string | undefined = useParams().gameId
@@ -116,8 +114,11 @@ export default function GameLayout() {
 
     // map ActionGameLayout components for each player to render if player stored in localstorage matches player
 
+    // get localPlayer
+    const localPlayer = useStore(store, (state) => state['localPlayerId'])
+
     const actionLayouts = gameData.players.map((player) => (
-        (localStorage.getItem('localPlayer') === player) && 
+        (localPlayer === player) && 
         <ActionGameLayout 
             key={player}
             localPlayer={player}
@@ -127,14 +128,14 @@ export default function GameLayout() {
     ))
 
     return (
-        <>
+        <div id="game-board">
             <Header resetTimer={toggleTimerReset} disableSubmit={disableSubmit} players={gameData.players} />
             <div id="columns" className="">
                 <SideMenu gameData={gameData} currentRound={currentRoundData} />
                 {actionLayouts}
             </div>
             <ChatLayout chatId={gameData.chat} />
-        </>
+        </div>
     )
 
 }

@@ -6,6 +6,7 @@ export const store = new Store({
     isJudge: "",
     winner: "",
     isHighBet: "",
+    localPlayerId: "",
     gamePhase: {
         beforeStart: true,
         gameStarting: false,

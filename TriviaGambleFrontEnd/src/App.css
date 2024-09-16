@@ -15,6 +15,32 @@ body {
   width: 100%;
 }
 
+/* home layout */
+
+#new-game-box {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 20rem;
+  border: solid black 1px;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.game-card {
+  border: solid black 1px;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+
+/* Game layout */
+
+#game-board {
+  display: flex;
+  flex-direction: column;
+}
+
 /* header css */
 
 #header {
@@ -60,7 +86,8 @@ body {
   grid-template-columns: 1fr 4fr;
   grid-template-rows: 100%;
   gap: 1.5rem;
-  height: 60vh;
+  height: 100%;
+  min-height: 60vh;
 }
 
 /* SideBar Css */
@@ -123,21 +150,67 @@ body {
 
 #chat-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   border-bottom: solid .5px white;
   position: sticky;
-  width: 95%;
+  width: 85%;
   padding-bottom: .5rem;
+  padding-left: 1rem;
 }
 
 #chat-div {
   display: flex;
   flex-direction: column;
-  width: 85%;
+  /* align-items: flex-start; */
+  width: 65%;
   height: 90%;
   overflow: auto;
   scrollbar-width: thin;
   scrollbar-color: white rgb(0,0,0,0)
+}
+
+.chat {
+  display: flex;
+}
+
+.chat.local {
+  justify-content: flex-end;
+}
+
+.chat.other {
+  justify-content: flex-start;
+}
+
+.chat-text {
+  display: flex;
+  align-items: center;
+  color: white;
+  background-color: rgba(255, 255, 255, .4);
+  padding: 0 1rem;
+
+  border-radius: 20px;
+  margin: .2rem 0;
+  width:fit-content;
+}
+
+#chat-input {
+  background: aliceblue;
+  border: none;
+  box-shadow: none;
+  color: black;
+  height: 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 1rem;
+  outline: none;
+}
+
+#chat-input:focus {
+  box-shadow: 2px 2px 10px black;
+  background-color: white;
+  height: 1.85rem;
+  font-size: 1.25rem;
 }
 
 /* number keyboard css */
@@ -183,8 +256,24 @@ body {
 /* answer box css */
 
 #answers-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
   overflow: hidden;
-  min-height: 5rem;
+  min-height: 8rem;
+  max-height: 15rem;
+  flex: 1 1 auto;
+}
+
+.answers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  padding-bottom: .5rem;
+  position: sticky;
+  width: 95%;
 }
 
 .answers-list {
@@ -200,9 +289,77 @@ body {
 }
 
 .answer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  font-weight: 900;
   border-bottom: 1px #662E9B solid;
   width: 95%;
+  padding: .5rem 0;
 }
+
+.answer-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50px;
+  background-color: #43BCCD;
+  margin-right: 1rem;
+}
+
+.answer-text {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.answer-status {
+  display: flex;
+  align-items: center;
+}
+
+.answer-btn-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 7rem;
+  overflow: hidden;
+}
+
+.appeal-btn-box {
+  border: 1px solid black;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.answer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 .25rem;
+  width: 4.5rem;
+  min-height: 2rem;
+}
+
+.answer-btn:active:hover {
+  box-shadow: inset 1px 1px 1px black;
+}
+
+.answer-btn.left-answer-btn {
+  border-right: 1px solid black;
+  border-radius: 5px 0 0 5px;
+}
+
+.left-answer-btn:active:hover {
+  box-shadow: inset 1px 1px 1px black;
+}
+
+/* keyboard */
 
 #keyboard {
   max-height: 20rem;
@@ -246,15 +403,6 @@ body {
   box-shadow: 1px 1px 5px black;
   background: #43BCCD;
   color: #F9C80E;
-}
-
-#chat-input {
-  background: white;
-  color: black;
-  height: 2rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-left: 1rem;
 }
 
 /* Button css */
@@ -302,6 +450,29 @@ body {
 
   #message-div {
     font-size: 1.5rem;
+  }
+
+  #chat-div {
+    width: 85%;
+  }
+
+  /* #chat-header {
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  } */
+
+  .answer {
+    flex-wrap: wrap;
+    /* width: 10rem; */
+  }
+
+  .answer-span-1 {
+    flex-direction: column;
+  }
+
+  .answer-status, .answer-btn-box {
+    margin-left: 2.5rem;
   }
 }
 

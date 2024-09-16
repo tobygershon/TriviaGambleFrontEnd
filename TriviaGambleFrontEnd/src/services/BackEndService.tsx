@@ -4,6 +4,17 @@ const localHost = axios.create({
     baseURL: 'http://127.0.0.1:5000'
 })
 
+// get all unstarted games
+
+export async function getAllUnstartedGames() {
+    try {
+        const response = await localHost.get('')
+        return response.data.unstarted_games
+    } catch (error) {
+        console.log('There was an error w/new_game endpt: ' + error)
+    }
+}
+
 // new game
 
 export function createNewGame(playerName: string) {
@@ -17,15 +28,15 @@ export function createNewGame(playerName: string) {
     })
 }
 
-export function addNewPlayer(gameId: string, playerName: string) {
-    localHost.put(`/${gameId}/add_player`, {
+export async function addNewPlayer(gameId: string, playerName: string) {
+    try {
+    const response = await localHost.put(`/${gameId}/add_player`, {
         player: playerName
-    }).then(function (response) {
-        console.log(response)
-        return response
-    }).catch(function (error) {
-        console.log('There was an error w/add_player endpt: ' + error)
     })
+        return response.data.player_id
+    } catch(error) {
+        console.log('There was an error w/add_player endpt: ' + error)
+    }
 }
 
 export function createNewCategory(gameId: string, newCategory: string) {
@@ -84,9 +95,9 @@ export function endRound(gameId: string) {
         .then(function (response) {
             console.log(response)
             return response
-    }).catch(function (error) {
+        }).catch(function (error) {
             console.log('There was an error w/judge endpt: ' + error)
-    })
+        })
 }
 
 // put endpt to /<game_id>/dispute not yet written on back end

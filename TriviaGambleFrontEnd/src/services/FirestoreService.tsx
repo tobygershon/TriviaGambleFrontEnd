@@ -51,6 +51,15 @@ export function updateHighBet(currentRoundId: string, playerId: string, playerNa
     })
 }
 
+// method to update answer status
+export function updateAnswerStatus(answerId: string, updatedStatus: string | boolean) {
+    const answerDocRef = doc(db, "answers", answerId);
+    
+    updateDoc(answerDocRef, {
+        status: updatedStatus
+    })
+}
+
 // method to update isHighBet: false after other player bets higher
 
 export function updateNotIsHighBet(playerId: string) {
@@ -63,7 +72,7 @@ export function updateNotIsHighBet(playerId: string) {
 
 // method to send new chat to chat doc
 
-export function sendChat(text: string, chatId: string) {
+export function sendChat(text, chatId: string) {
     const chatDocRef = doc(db, "chats", chatId)
 
     updateDoc(chatDocRef, {
