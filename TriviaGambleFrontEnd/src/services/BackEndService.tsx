@@ -17,24 +17,25 @@ export async function getAllUnstartedGames() {
 
 // new game
 
-export function createNewGame(playerName: string) {
-    localHost.post('/new_game', {
-        player: playerName
-    }).then(function (response) {
-        console.log(response)
-        return response
-    }).catch(function (error) {
+export async function createNewGame(playerName: string) {
+
+    try {
+        const response = await localHost.post('/new_game', {
+            player: playerName
+        })
+        return response.data
+    } catch (error) {
         console.log('There was an error w/new_game endpt: ' + error)
-    })
+    }
 }
 
 export async function addNewPlayer(gameId: string, playerName: string) {
     try {
-    const response = await localHost.put(`/${gameId}/add_player`, {
-        player: playerName
-    })
+        const response = await localHost.put(`/${gameId}/add_player`, {
+            player: playerName
+        })
         return response.data.player_id
-    } catch(error) {
+    } catch (error) {
         console.log('There was an error w/add_player endpt: ' + error)
     }
 }
