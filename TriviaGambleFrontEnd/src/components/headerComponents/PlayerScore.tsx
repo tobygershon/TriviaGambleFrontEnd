@@ -44,7 +44,7 @@ useEffect(() => {
     }
 
     if (playerData.isHighBet) {
-        updateStore("isHighBet", playerData.name)
+        updateStore("isHighBet", player)
         setIsHighBet(true)
     } else {
         setIsHighBet(false)

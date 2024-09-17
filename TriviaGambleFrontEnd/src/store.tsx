@@ -16,8 +16,8 @@ export const store = new Store({
         endBetting: false,
         startAnswering: false, // needs to be updated to true after endBetting messages are run
         duringAnswering: false, // needs to be updated to true after startAnswering messages are run
-        endAnswering: false,
         waitingForJudge: false,
+        endAnswering: false,
         gameEnding: false
     },
     localPlayer: {

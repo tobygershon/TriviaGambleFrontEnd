@@ -4,9 +4,11 @@ import TimerLayout from '../../components/timerComponents/TimerLayout'
 import Scoreboard from '../../components/headerComponents/Scoreboard'
 import { store } from '../../store'
 import { useStore } from '@tanstack/react-store'
+import { endBetting, endRound } from '../../services/BackEndService'
+import { updatePhase } from '../../services/PhaseChangeService'
 
 
-export default function Header({ resetTimer, disableSubmit, players }) {
+export default function Header({ gameId, resetTimer, disableSubmit, players }) {
 
     const [showTimer, setShowTimer] = useState(false)
     const gamePhase = useStore(store, (state) => state["gamePhase"])
@@ -25,10 +27,23 @@ export default function Header({ resetTimer, disableSubmit, players }) {
         }
     }, [gamePhase, localPlayerData])
 
-    function timerOver(isOver: boolean) {
+    // need current round's high bet and highBet player Id
+
+    const highBet = useStore(store, (state) => state["currentRound"].highBet.bet)
+    const highBetPlayerId = useStore(store, (state) => state["isHighBet"])
+
+    async function timerOver(isOver: boolean) {
         if (isOver) {
             setTimeout(() => setShowTimer(false), 2800)
             disableSubmit(isOver)
+            if (gamePhase.duringBetting) {
+                endBetting(gameId, highBetPlayerId, highBet)  
+            } else if (gamePhase.duringAnswering) {
+                const response = await endRound(gameId) // also need to call this if correct answers are enough
+                if (response.status === 'PENDING') {
+                    updatePhase("endAnswering", "waitingForJudge")
+                }
+            }
         }
     }
 

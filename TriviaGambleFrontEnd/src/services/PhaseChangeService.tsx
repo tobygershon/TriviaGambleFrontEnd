@@ -24,7 +24,7 @@ export const PhaseChangeHelper = (gamePhase, gameData, currentRound) => {
             updatePhase("beforeStart", "gameStarting")
         }
         // change to end game phase
-        if (gamePhase.endAnswering && gameData.hasEnded) { // or gamePhase.waitingForJudge instead of endAnswering
+        if ((gamePhase.endAnswering || gamePhase.waitingForJudge) && gameData.hasEnded) { // needs changed?
             updatePhase("endAnswering", "gameEnding")
         }
         }, [gameData])
@@ -42,11 +42,15 @@ export const PhaseChangeHelper = (gamePhase, gameData, currentRound) => {
             if (gamePhase.duringBetting && !currentRound.isBetting) {
                 updatePhase("duringBetting", "endBetting")
             }
-
             // change to endAnswering phase after round isOver
-            if (gamePhase.duringAnswering && currentRound.isOver) {
+            if (currentRound.isOver && gamePhase.duringAnswering) {
                 updatePhase("duringAnswering", "endAnswering")
             }
+            // change to endAnswering after round over from waiting for judge
+            if (currentRound.isOver && gamePhase.waitingForJudge) {
+                updatePhase("waitingForJudge", "endAnswering")
+            }
+
     }, [currentRound])
 
     }

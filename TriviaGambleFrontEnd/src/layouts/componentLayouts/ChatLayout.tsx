@@ -65,9 +65,9 @@ export default function ChatLayout({ chatId }) {
 
     const chatsArray = () => {
         if (chats.length > 1) {
-            return chats.slice(1).map((msg, index) => <div className={localPlayerName === msg.player ? "chat local" : "chat other"} > <p className="chat-text" key={index} >{msg.player === localPlayerName ? 'You' : msg.player}: {msg.text}</p></div>)
+            return chats.slice(1).map((msg, index) => <div className={localPlayerName === msg.player ? "chat local" : "chat other"} key={index} > <p className="chat-text" >{msg.player === localPlayerName ? 'You' : msg.player}: {msg.text}</p></div>)
         } else {
-            return chats.map((msg, index) => <div className="chat"><p className="chat-text other" key={index} >{msg.text}</p></div>)
+            return chats.map((msg, index) => <div className="chat" key={index}><p className="chat-text other" >{msg.text}</p></div>)
         }
     }
 

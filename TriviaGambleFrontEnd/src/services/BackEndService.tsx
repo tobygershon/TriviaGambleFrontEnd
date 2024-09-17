@@ -77,7 +77,7 @@ export function addAnswer(gameId: string, newAnswer: string) {
     })
 }
 
-export function submitJudgement(gameId: string, answerId: string, updatedStatus: boolean) {
+export function submitJudgement(gameId: string, answerId: string, updatedStatus: boolean | string) {
     localHost.put(`/${gameId}/judge`, {
         answer_id: answerId,
         status: updatedStatus
@@ -91,14 +91,13 @@ export function submitJudgement(gameId: string, answerId: string, updatedStatus:
 
 // no payload.  call fx when timer expires on answering.  will return status 'PENDING' if still waiting on answer judgment
 // 'PENDING' returned only if num of pending answers could be enough to win round 
-export function endRound(gameId: string) {
-    localHost.put(`/${gameId}/end_round`)
-        .then(function (response) {
-            console.log(response)
-            return response
-        }).catch(function (error) {
+export async function endRound(gameId: string) {
+    try {
+        const response = await localHost.put(`/${gameId}/end_round`)
+            return response.data
+        } catch(error) {
             console.log('There was an error w/judge endpt: ' + error)
-        })
+        }
 }
 
 // put endpt to /<game_id>/dispute not yet written on back end

@@ -36,9 +36,11 @@ export const MessageHelperService = (gamePhase, gameData, localPlayerData, curre
 
     function updatePhaseFromMsgArrayEnding() {
         if (gamePhase.gameStarting) {
-          updatePhase("gameStarting", "waitingForCategory")
+            updatePhase("gameStarting", "waitingForCategory")
         } else if (gamePhase.endBetting) {
-          updatePhase("endBetting", "duringAnswering")
+            updatePhase("endBetting", "duringAnswering")
+        } else if (gamePhase.endAnswering) {
+            updatePhase("endAnswering", "waitingForCategory")
         }
     }
 
@@ -74,7 +76,7 @@ export const MessageHelperService = (gamePhase, gameData, localPlayerData, curre
     const duringAnsweringMsgsOthers = [`Watch while ${currentRound.highBet.player} tries to get more than ${currentRound.highBet.bet} answers!`]
     // const endAnsweringWinningMsgs = ["The Timer is Over!", `Great Job ${currentRound.highBet.player}!`, `You got ${currentRound.highBet.bet} answers correct!`, "You win a point for the round!"]
     // const endAnsweringLosingMsgs = ["The Timer is Over!", `Sorry ${currentRound.highBet.player}, you couldn't reach ${currentRound.highBet.bet} answers`, "Your opponent gets a point for the round"]
-    const waitingForJudgeMsgs = ["We are waiting for the judge to to determine if some answers are correct..."]
+    const waitingForJudgeMsgs = ["The Timer is Over!", "We are waiting for the judge to to determine if some answers are correct..."]
     const gameEndingMsgs = ["The Game is Over!", `Congratulations ${gameData.winner}! You win with ${gameData.endingScore} points!`]
 
     useEffect(() => {

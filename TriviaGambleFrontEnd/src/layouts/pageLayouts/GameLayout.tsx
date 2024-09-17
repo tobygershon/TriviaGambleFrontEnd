@@ -129,7 +129,7 @@ export default function GameLayout() {
 
     return (
         <div id="game-board">
-            <Header resetTimer={toggleTimerReset} disableSubmit={disableSubmit} players={gameData.players} />
+            <Header gameId={gameId} resetTimer={toggleTimerReset} disableSubmit={disableSubmit} players={gameData.players} />
             <div id="columns" className="">
                 <SideMenu gameData={gameData} currentRound={currentRoundData} />
                 {actionLayouts}

@@ -19,14 +19,18 @@ export default function GameCard({ gameId, toggleModal, playerName }) {
 
     const [gameData, setGameData] = useState({ players: [] })
     const totalGamePlayers = 3
-    const playersNeeded = totalGamePlayers - gameData.players.length
+    const [playersNeeded, setPlayersNeeded] = useState(totalGamePlayers - gameData.players.length)
+
+    useEffect(() => {
+        setPlayersNeeded(totalGamePlayers - gameData.players.length)
+    }, [gameData])
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "games", gameId), (doc) => {
             if (doc.data()) {
                 setGameData(doc.data())
             } else {
-                console.log("error retrieving player data in action layout")
+                console.log("error retrieving player data in GameCard")
             }
         })
         return unsub

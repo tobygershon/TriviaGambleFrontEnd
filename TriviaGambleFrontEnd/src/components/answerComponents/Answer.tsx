@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import { db, updateAnswerStatus } from '../../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
 import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
-import { onBackgroundMessage } from "firebase/messaging/sw"
 import AnswerButtons from "./AnswerButtons"
+import { submitJudgement } from "../../services/BackEndService"
 
 export default function Answer({ answerId, count }) {
 
@@ -31,15 +32,29 @@ export default function Answer({ answerId, count }) {
         }
     }
 
+    //need gameId for calls to backend
+    const gameId = useParams().gameId
+
+    // need to skip first effect on render.  create state to update after first render
+    const [skipFirst, setSkipFirst] = useState(false)
+
     useEffect(() => {
-        if (rightClicked) {
-            updateAnswerStatus(answerId, false)
-        } else if (leftClicked) {
-            updateAnswerStatus(answerId, true)
-        } else if (appealClicked) {
-            updateAnswerStatus(answerId, "APPEALED")
+        if (skipFirst) {
+            if (rightClicked) {
+                submitJudgement(gameId, answerId, false)
+                // updateAnswerStatus(answerId, false)
+            } else if (leftClicked) {
+                submitJudgement(gameId, answerId, true)
+                // updateAnswerStatus(answerId, true)
+            } else if (appealClicked) {
+                submitJudgement(gameId, answerId, "APPEALED")
+                // updateAnswerStatus(answerId, "APPEALED")
+            } else {
+                submitJudgement(gameId, answerId, "PENDING")
+                // updateAnswerStatus(answerId, "PENDING")
+            }
         } else {
-            updateAnswerStatus(answerId, "PENDING")
+            setSkipFirst(true)
         }
     }, [rightClicked, leftClicked, appealClicked])
 
@@ -89,7 +104,7 @@ export default function Answer({ answerId, count }) {
             </div>
             {isJudge && <div className="answer-btn-box"><AnswerButtons clicked={leftClicked} changeClick={handleClick} text={"Right"} />
             <AnswerButtons clicked={rightClicked} changeClick={handleClick} text={"Wrong"} /></div> /* div for judge with 2 buttons */}
-            {isAnswering && <div className="appeal-btn-box" ><AnswerButtons clicked={appealClicked} changeClick={handleClick} text={"Appeal!"} /></div> /* div to appeal for isAnswering */}
+            {isAnswering && answer.status === false && <div className="appeal-btn-box" ><AnswerButtons clicked={appealClicked} changeClick={handleClick} text={"Appeal!"} /></div> /* div to appeal for isAnswering */}
         </div>
 
 
