@@ -10,7 +10,7 @@ const variantsSubmit = {
     closed: {rotate: 360}
 }
 
-export default function Button({ text, btnType, data, timerOver }) {
+export default function GenericButton({ text, btnType, data, timerOver }) {
 
     const buttonText: string = text
     const btn: string = btnType
@@ -20,7 +20,11 @@ export default function Button({ text, btnType, data, timerOver }) {
     function handleClick() {
         setBtnClicked(btnClicked => !btnClicked)
         setTimeout(() => setBtnClicked(btnClicked => !btnClicked), 500)
-        data(text) 
+        if (btn === 'generic-btn') {
+            data(text) 
+        } else {
+            data(btn)
+        }
     }
 
     return (

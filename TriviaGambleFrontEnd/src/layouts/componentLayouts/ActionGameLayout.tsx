@@ -101,7 +101,6 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }
     }, [gamePhase])
 
-    const highBetPlayer = useStore(store, (state) => state["isHighBet"])
 
     // method called up from keyboard to update high bet in GameLayout
     function updateCurrentHighBet(newHighBet: number) {

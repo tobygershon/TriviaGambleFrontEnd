@@ -4,6 +4,7 @@ import Answer from './Answer'
 export default function AnswersList({ currentRound }) {
 
     const [answers, setAnswers] = useState(["No answers yet"])
+    const [correctCount, setCorrectCount] = useState(0)
 
     useEffect(() => {
         if (currentRound) {
@@ -13,22 +14,25 @@ export default function AnswersList({ currentRound }) {
 
     const highBet = currentRound.highBet.bet
 
-    //should this be in useEffect to ensure updates?
-    const correctCount = getCorrectAnswersCount()
-
-    function getCorrectAnswersCount() {
-        let count = 0;
-        for (let answer of answers) {
-            if (answer.status === true) {
-                count += 1;
-            }
-        }
-        return count;
+    function incrementCount(num: number) {
+        setCorrectCount(prev => prev + num)
     }
+
+    // don't need below b/c checkifroundwon is checked on backend when every judgement is submitted
+    // consider checking on front end too and throwing error if not matched up with back end?
+    // function checkIfRoundWon() {
+    //     if (correctCount >= highBet) {
+    //         endRound(gameId)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     checkIfRoundWon()
+    // }, [correctCount])
 
 
     const answersList = answers.map((answer, index) => (
-        <Answer key={answer} answerId={answer} count={index + 1} />
+        <Answer key={answer} answerId={answer} count={index + 1} incrementCount={incrementCount} />
     ))
 
     // autoscroll to bottom of div for each new answer submitted

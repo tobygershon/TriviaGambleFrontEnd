@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useLoaderData } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { store } from "../../store"
-import { getAllUnstartedGames, createNewGame, addNewPlayer } from "../../services/BackEndService"
+import { getAllUnstartedGames, createNewGame } from "../../services/BackEndService"
 import NewGamesLayout from "../componentLayouts/NewGamesLayout"
 import GenericButton from "../../components/generalComponents/GenericButton"
 
@@ -46,7 +46,6 @@ export default function HomeLayout() {
         setPlayerName(event.target.value)
     }
 
-    console.log(playerName)
 
     return (
         <>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"; 
 import { useParams } from "react-router-dom";
 import { motion } from 'framer-motion'
-import Button from "../generalComponents/GenericButton";
+import GenericButton from "../generalComponents/GenericButton";
 import { createNewCategory, addAnswer } from "../../services/BackEndService";
 
 export default function AnswerInput({ type, resetTimer, timerOver }) {
@@ -34,7 +34,8 @@ export default function AnswerInput({ type, resetTimer, timerOver }) {
     }
 
    
-
+    console.log("timer over in answer input: " + timerOver)
+    
     return (
         <motion.div
             id='answer-input'>
@@ -47,12 +48,13 @@ export default function AnswerInput({ type, resetTimer, timerOver }) {
                 onChange={handleInputChange}
                 autoFocus/>
             <div className="is-flex is-justify-content-space-evenly">
-                <Button 
+                <GenericButton 
                 btnType='back-btn'
                 text={'Clear'}  
                 data={handleClear}
+                timerOver={false}
                 />
-                <Button 
+                <GenericButton 
                 btnType='submit-btn'
                 text={'Submit'}
                 data={handleSubmit}

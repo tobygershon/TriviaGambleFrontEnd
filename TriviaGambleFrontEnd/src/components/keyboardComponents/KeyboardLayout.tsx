@@ -3,23 +3,18 @@ import { motion } from "framer-motion";
 import NumberKeyboard from "./NumberKeyboardLayout";
 import ControlKeyboard from "./ControlKeyboardLayout";
 import CurrentMessage from "../generalComponents/CurrentMessage";
+import { useParams } from "react-router-dom";
 import { store } from "../../store";
+import { useStore } from "@tanstack/react-store";
+import { endBetting } from "../../services/BackEndService";
 
 export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, highBet }) {
 
     const [keyboardInput, setKeyBoardInput] = useState(0)
     const [lastInput, setLastInput] = useState([0])
+    const gameId = useParams().gameId
+    const highBetPlayerId = useStore(store, (state) => state["isHighBet"])
 
-    const [message, setMessage] = useState("Place Your First Bet!")
-    const [currentHighBet, setCurrentHighBet] = useState({})
-
-    // useEffect(() => {
-    //     if (isHighBet) {
-    //         setMessage("You are the high bet! ...Waiting for a counter-bet")
-    //     } else {
-    //         setMessage(`Do you want to bet more than ${currentHighBet.bet}?`)
-    //     }
-    // }, [isHighBet])
 
     function updateInput(value) {
             if (keyboardInput === 0 && typeof value === "number") {
@@ -28,11 +23,11 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
             } else if (typeof value === "number" && keyboardInput.toString().length < 2) {
                 setLastInput(prevInput => [...prevInput, keyboardInput])
                 setKeyBoardInput(prevInput => prevInput * 10 + value)
-            } else if (value === 'Back') {
+            } else if (value === 'back-btn') {
                 if (lastInput.length > 0) {
                     setKeyBoardInput(lastInput.pop())
                 }
-            } else if (value === 'Submit') {
+            } else if (value === 'submit-btn') {
                 setKeyBoardInput(0)
                 setLastInput([0])
                 if (checkIfNewBetIsHigher()) {
@@ -43,8 +38,11 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                 } else {
                     updateMessage([`You need to bet more than ${highBet}`])
                 } 
+            } else if (keyboardInput === 0) {
+                endBetting(gameId, highBetPlayerId, highBet)   // this is case where person betting gives up and lets the high bet person try to answer
             }
-    }
+        }
+
 
     const checkIfNewBetIsHigher = () => keyboardInput > highBet ? true : false;
     const updateMessage = (message) => {
@@ -63,7 +61,7 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
         >
             <NumberKeyboard update={updateInput} firstNum={0} lastNum={5}/>
             <NumberKeyboard update={updateInput} firstNum={5} lastNum={10}/>
-            <ControlKeyboard currentNum={keyboardInput} update={updateInput} timerOver={timerOver} />
+            <ControlKeyboard currentNum={keyboardInput} update={updateInput} timerOver={timerOver} highBet={highBet} />
 
         </motion.div>
     )

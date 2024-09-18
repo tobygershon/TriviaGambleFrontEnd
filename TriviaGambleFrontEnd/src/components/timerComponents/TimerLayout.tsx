@@ -10,7 +10,10 @@ export default function TimerLayout({ resetTimer, handleTimerOver, startNum }) {
     const [timerOver, setTimerOver] = useState(false)
 
     useEffect(() => {
-        handleTimerOver(timerOver)
+        if (timerOver) {
+            handleTimerOver(timerOver)
+            setTimerOver(false)
+        }
     }, [timerOver])
 
     useEffect(() => {

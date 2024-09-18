@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { db, updateAnswerStatus } from '../../services/FirestoreService'
-import { onSnapshot, doc } from "firebase/firestore"
+import { onSnapshot, doc, increment } from "firebase/firestore"
 import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
 import AnswerButtons from "./AnswerButtons"
 import { submitJudgement } from "../../services/BackEndService"
 
-export default function Answer({ answerId, count }) {
+export default function Answer({ answerId, count, incrementCount }) {
 
     const isJudge = useStore(store, (state) => state["localPlayer"].isJudge)
     const isAnswering = useStore(store, (state) => state["localPlayer"].isAnswering)
 
     const [answer, setAnswer] = useState("")
+    const [answerStatus, setAnswerStatus] = useState("")
+
+    // useEffect dependent on answerStatus increments answerList count by 1 when changed to true, then decrements by one when changed to false
+    useEffect(() => {
+        if (answerStatus === "right") {
+            incrementCount(1)
+        } else if (answerStatus === "other") {
+            incrementCount(-1)
+        }
+    }, [answerStatus])
 
     // state for judging buttons right or wrong
 
@@ -59,18 +69,29 @@ export default function Answer({ answerId, count }) {
     }, [rightClicked, leftClicked, appealClicked])
 
     // state for number color
+    // also update correct answer count using same useEffect via answerStatus
 
     const [color, setColor] = useState("")
 
     useEffect(() => {
         if (answer.status === true) {
                 setColor("#43BCCD")
+                setAnswerStatus("right")
             } else if (answer.status === false) {
                 setColor("#EA3546")
+                if (answerStatus === "right") {
+                    setAnswerStatus("other")
+                }
             } else if (answer.status === "PENDING") {
                 setColor("#F9C80E")
+                if (answerStatus === "right") {
+                    setAnswerStatus("other")
+                }
             } else if (answer.status === "APPEALED") {
                 setColor("#F86624")
+                if (answerStatus === "right") {
+                    setAnswerStatus("other")
+                }
             }
     }, [answer])
 

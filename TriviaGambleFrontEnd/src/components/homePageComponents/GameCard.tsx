@@ -48,7 +48,6 @@ export default function GameCard({ gameId, toggleModal, playerName }) {
         const playerId = await addNewPlayer(gameId, formData.playerName)
         updateStore(playerId)
         navigate(`/${gameId}`)
-        console.log('join game')
     }
 
     const toggleThisModal = () => {
@@ -63,13 +62,12 @@ export default function GameCard({ gameId, toggleModal, playerName }) {
         }))
     }
 
-    console.log(formData.playerName)
 
     return (
         <>
             <div className="game-card" >
                 <h4>{playersNeeded} Players Needed!</h4>
-                <GenericButton data={toggleThisModal} text={"Join Game!"} btnType={"generic-btn"} />
+                <GenericButton data={toggleThisModal} text={"Join Game!"} btnType={"generic-btn"} timerOver={false}/>
             </div>
 d
             <div className={modalOpen ? "modal is-active" : "modal"}>

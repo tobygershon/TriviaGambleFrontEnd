@@ -54,12 +54,11 @@ export function createNewCategory(gameId: string, newCategory: string) {
 // @app.put("/<game_id>/bet") endpoint not written.  method to update in firebase service to directly control from front end?
 
 
-export function endBetting(gameId: string, playerName: string, highBet: number) {
+export function endBetting(gameId: string, playerId: string, highBet: number) {
     localHost.put(`/${gameId}/end_betting`, {
-        player: playerName,
+        player: playerId,
         bet: highBet
     }).then(function (response) {
-        console.log(response)
         return response
     }).catch(function (error) {
         console.log('There was an error w/end_betting endpt: ' + error)

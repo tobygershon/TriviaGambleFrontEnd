@@ -110,6 +110,7 @@ export default function GameLayout() {
 
     function disableSubmit(isOver: boolean) {
         setTimerIsOver(isOver)
+        setTimeout(() => setTimerIsOver(false), 10000)
     }
 
     // map ActionGameLayout components for each player to render if player stored in localstorage matches player

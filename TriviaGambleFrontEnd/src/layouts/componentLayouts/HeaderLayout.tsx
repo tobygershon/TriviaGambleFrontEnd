@@ -16,14 +16,15 @@ export default function Header({ gameId, resetTimer, disableSubmit, players }) {
 
     useEffect(() => {
         if (gamePhase.duringBetting) {
-            if (!localPlayerData.isHighBet) {
+            if (!localPlayerData.isHighBet && !localPlayerData.isJudge) {
                 setShowTimer(true)
             } else {
                 setShowTimer(false)
             }
-            
         } else if (gamePhase.duringAnswering && localPlayerData.isAnswering) {
-            setShowTimer(true)  //May need to reset showTimer to false here
+                setShowTimer(true)
+        } else {
+            setShowTimer(false)  // should set timer to false anytime phase changes and above conditions not met
         }
     }, [gamePhase, localPlayerData])
 
@@ -39,7 +40,7 @@ export default function Header({ gameId, resetTimer, disableSubmit, players }) {
             if (gamePhase.duringBetting) {
                 endBetting(gameId, highBetPlayerId, highBet)  
             } else if (gamePhase.duringAnswering) {
-                const response = await endRound(gameId) // also need to call this if correct answers are enough
+                const response = await endRound(gameId)
                 if (response.status === 'PENDING') {
                     updatePhase("endAnswering", "waitingForJudge")
                 }
