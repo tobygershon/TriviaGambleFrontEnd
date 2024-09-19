@@ -42,6 +42,24 @@ export default function GameLayout() {
         "answers": string[]
     }
 
+     // current state of game below
+     const gameData = useStore(store, (state) => state["game"])
+     const updateGameData = (gameObj) => {
+         store.setState((state) => ({
+             ...state,
+             ["game"]: gameObj
+         }))
+        }
+     
+ 
+     const currentRoundData = useStore(store, (state) => state["currentRound"])
+     const updateCurrentRound = (roundObj) => {
+         store.setState((state) => ({
+             ...state,
+             ["currentRound"]: roundObj
+         }))
+     }
+
         // below are the onSnapshot effects to update real time info
 
     // update game info
@@ -56,10 +74,21 @@ export default function GameLayout() {
         return unsub
     }, [])
 
-    
-
     // update current round info
+
     const [currentRoundId, setCurrentRoundId] = useState("")
+
+    useEffect(() => {
+        const roundId = getCurrentRoundId()
+        if (roundId) {
+            setCurrentRoundId(roundId)
+        }
+    }, [gameData])
+
+    function getCurrentRoundId() {
+        return gameData.rounds[gameData.rounds.length - 1]
+    }
+    
     useEffect(() => {
         if (currentRoundId) {
         const unsub = onSnapshot(doc(db, "rounds", currentRoundId), (snapshot) => {
@@ -68,36 +97,10 @@ export default function GameLayout() {
             } else {
                 console.log("error retrieving current round data")
             }
-    })
-    return unsub
-}
-}, [currentRoundId])
-
-    // current state of game below
-    const gameData = useStore(store, (state) => state["game"])
-    const updateGameData = (gameObj) => {
-        store.setState((state) => ({
-            ...state,
-            ["game"]: gameObj
-        }))
-    }
-
-    const currentRoundData = useStore(store, (state) => state["currentRound"])
-    const updateCurrentRound = (roundObj) => {
-        store.setState((state) => ({
-            ...state,
-            ["currentRound"]: roundObj
-        }))
-    }
-
-
-    useEffect(() => {
-        setCurrentRoundId(getCurrentRoundId())
-    }, [gameData])
-
-    function getCurrentRoundId() {
-        return gameData.rounds[gameData.rounds.length - 1]
-    }
+        })
+        return unsub
+        }
+    }, [currentRoundId])
 
     // timer state and functions below, as well as function to update high Bet from keyboard
 

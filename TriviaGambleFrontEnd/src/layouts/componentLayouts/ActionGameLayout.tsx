@@ -1,18 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { onSnapshot, doc } from "firebase/firestore";
 import { db } from '../../services/FirestoreService';
 import { motion } from "framer-motion";
 import { useStore } from "@tanstack/react-store";
 import { store } from '../../store'
-import { updateHighBet, updateNotIsHighBet } from "../../services/FirestoreService";
 import Keyboard from "../../components/keyboardComponents/KeyboardLayout";
 import AnswerInput from "../../components/inputComponents/AnswerInputLayout";
 import CurrentMessage from "../../components/generalComponents/CurrentMessage";
 import AnswersList from "../../components/answerComponents/AnswersList";
 import { PhaseChangeHelper } from "../../services/PhaseChangeService";
 import { MessageHelperService } from "../../services/MessageHelperService";
+import { updateHighBet, updateNotIsHighBet } from "../../services/FirestoreService";
+import { startNewRound } from "../../services/BackEndService";
 
 export default function ActionGameLayout({ localPlayer, resetTimer, timerOver }) {
+
+    // get gameId to pass into startNewRound method
+    const gameId = useParams().gameId
 
     // bring in game and round state from store
     const currentRound = useStore(store, (state) => state["currentRound"])
@@ -59,7 +64,22 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     
     PhaseChangeHelper(gamePhase, gameData, currentRound)
 
-   
+    // call backend to start next round when phase changes to startNextRound
+    // state ensures that it is only called once
+
+// const [callOnce, setCallOnce] = useState(true)
+    useEffect(() => {
+        if (gamePhase.startNextRound && localPlayerData.isAnswering) { // isAnswering player is used so that call is only made once
+            startNewRound(gameId)                                       // possibly use this to control appeals?
+            // if (callOnce) {
+            // startNewRound(gameId)
+            // setCallOnce(false)
+            // console.log('startNewRoundCalled from action layout')
+            // }
+            // setTimeout(() => setCallOnce(true), 10000)
+        }
+    }, [gamePhase])
+
 // Controlls whether components are shown or not
 
     // Answers
@@ -80,7 +100,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         if (localPlayerData) {
             if ((gamePhase.waitingForCategory && localPlayerData.isJudge) || ((gamePhase.startAnswering || gamePhase.duringAnswering) && localPlayerData.isAnswering)) {
                 setShowInput(true)
-            } else if (gamePhase.startBetting || gamePhase.endAnswering) {
+            } else if (gamePhase.startBetting || gamePhase.endAnswering || gamePhase.waitingForJudge) {
                 setShowInput(false)
             }
     }
@@ -113,6 +133,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     const messages = MessageHelperService(gamePhase, gameData, localPlayerData, currentRound)
 
+    console.log(gamePhase)
 
     return (
         <motion.div

@@ -17,7 +17,8 @@ export const store = new Store({
         startAnswering: false, // needs to be updated to true after endBetting messages are run
         duringAnswering: false, // needs to be updated to true after startAnswering messages are run
         waitingForJudge: false,
-        endAnswering: false,
+        endAnswering: false, // updated with end of answers
+        startNextRound: false,
         gameEnding: false
     },
     localPlayer: {
@@ -34,7 +35,8 @@ export const store = new Store({
         players: [],
         rounds: [],
         winner: "",
-        chat: ""
+        chat: "",
+        gamePhase: "beforeStart"
     },
     currentRound: {
         answers: [],
@@ -45,5 +47,7 @@ export const store = new Store({
         },
         isBetting: true,
         isOver: false,
+        wonRound: "PENDING",
+        startNextRound: false
     }
 })

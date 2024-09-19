@@ -40,6 +40,16 @@ export async function addNewPlayer(gameId: string, playerName: string) {
     }
 }
 
+export function updateGamePhase(gameId: string, newPhase: string) {
+    try {
+        localHost.put(`/${gameId}/phase`, {
+            newGamePhase: newPhase
+        })
+    } catch(error) {
+        console.log('There was an error w/updatePhase endpt: ' + error)
+    }
+}
+
 export function createNewCategory(gameId: string, newCategory: string) {
     localHost.put(`/${gameId}/category`, {
         category: newCategory
@@ -54,15 +64,16 @@ export function createNewCategory(gameId: string, newCategory: string) {
 // @app.put("/<game_id>/bet") endpoint not written.  method to update in firebase service to directly control from front end?
 
 
-export function endBetting(gameId: string, playerId: string, highBet: number) {
-    localHost.put(`/${gameId}/end_betting`, {
-        player: playerId,
-        bet: highBet
-    }).then(function (response) {
-        return response
-    }).catch(function (error) {
+export async function endBetting(gameId: string, playerId: string, highBet: number) {
+    try {
+        const response = await localHost.put(`/${gameId}/end_betting`, {
+            player: playerId,
+            bet: highBet
+        })
+        return response.data
+    } catch(error) {
         console.log('There was an error w/end_betting endpt: ' + error)
-    })
+    }
 }
 
 export function addAnswer(gameId: string, newAnswer: string) {
@@ -76,16 +87,17 @@ export function addAnswer(gameId: string, newAnswer: string) {
     })
 }
 
-export function submitJudgement(gameId: string, answerId: string, updatedStatus: boolean | string) {
-    localHost.put(`/${gameId}/judge`, {
-        answer_id: answerId,
-        status: updatedStatus
-    }).then(function (response) {
-        console.log(response)
-        return response
-    }).catch(function (error) {
-        console.log('There was an error w/judge endpt: ' + error)
-    })
+export async function submitJudgement(gameId: string, answerId: string, updatedStatus: boolean | string, waitingForJudge: boolean) {
+    try {
+        const response = await localHost.put(`/${gameId}/judge`, {
+            answer_id: answerId,
+            status: updatedStatus,
+            waiting: waitingForJudge
+        })
+        return response.data
+    } catch(error) {
+            console.log('There was an error w/judge endpt: ' + error)
+        }
 }
 
 // no payload.  call fx when timer expires on answering.  will return status 'PENDING' if still waiting on answer judgment
@@ -95,8 +107,17 @@ export async function endRound(gameId: string) {
         const response = await localHost.put(`/${gameId}/end_round`)
             return response.data
         } catch(error) {
-            console.log('There was an error w/judge endpt: ' + error)
+            console.log('There was an error w/end_round endpt: ' + error)
         }
+}
+
+export async function startNewRound(gameId: string) {
+    try {
+        const response = await localHost.put(`/${gameId}/new_round`)
+        return response.data
+    } catch(error) {
+        console.log('There was an error w/new_round endpt: ' + error)
+    }
 }
 
 // put endpt to /<game_id>/dispute not yet written on back end

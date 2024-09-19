@@ -5,7 +5,7 @@ import Scoreboard from '../../components/headerComponents/Scoreboard'
 import { store } from '../../store'
 import { useStore } from '@tanstack/react-store'
 import { endBetting, endRound } from '../../services/BackEndService'
-import { updatePhase } from '../../services/PhaseChangeService'
+import { updateGamePhase } from '../../services/BackEndService'
 
 
 export default function Header({ gameId, resetTimer, disableSubmit, players }) {
@@ -40,9 +40,11 @@ export default function Header({ gameId, resetTimer, disableSubmit, players }) {
             if (gamePhase.duringBetting) {
                 endBetting(gameId, highBetPlayerId, highBet)  
             } else if (gamePhase.duringAnswering) {
+                // askForAppeals()   create method to open modal or show div in answers with btn saying 'done w/appeals'
+                // appeals should be asked for after timerOver as well as when last 'wrong' judgment comes through but before round is ended
                 const response = await endRound(gameId)
                 if (response.status === 'PENDING') {
-                    updatePhase("endAnswering", "waitingForJudge")
+                    updateGamePhase(gameId, "waitingForJudge")
                 }
             }
         }

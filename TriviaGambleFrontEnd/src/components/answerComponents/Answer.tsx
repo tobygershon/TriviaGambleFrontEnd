@@ -11,6 +11,8 @@ export default function Answer({ answerId, count, incrementCount }) {
 
     const isJudge = useStore(store, (state) => state["localPlayer"].isJudge)
     const isAnswering = useStore(store, (state) => state["localPlayer"].isAnswering)
+    const waitingForJudge = useStore(store, (state) => state["gamePhase"].waitingForJudge)
+    console.log(waitingForJudge + "from top")
 
     const [answer, setAnswer] = useState("")
     const [answerStatus, setAnswerStatus] = useState("")
@@ -51,16 +53,17 @@ export default function Answer({ answerId, count, incrementCount }) {
     useEffect(() => {
         if (skipFirst) {
             if (rightClicked) {
-                submitJudgement(gameId, answerId, false)
+                submitJudgement(gameId, answerId, false, waitingForJudge)
+                console.log(waitingForJudge)
                 // updateAnswerStatus(answerId, false)
             } else if (leftClicked) {
-                submitJudgement(gameId, answerId, true)
+                submitJudgement(gameId, answerId, true, waitingForJudge)
                 // updateAnswerStatus(answerId, true)
             } else if (appealClicked) {
-                submitJudgement(gameId, answerId, "APPEALED")
+                submitJudgement(gameId, answerId, "APPEALED", waitingForJudge)
                 // updateAnswerStatus(answerId, "APPEALED")
             } else {
-                submitJudgement(gameId, answerId, "PENDING")
+                submitJudgement(gameId, answerId, "PENDING", waitingForJudge)
                 // updateAnswerStatus(answerId, "PENDING")
             }
         } else {
@@ -120,12 +123,12 @@ export default function Answer({ answerId, count, incrementCount }) {
                 {answer.status === true && <p className="answer-status"><span>Result:&nbsp;</span><span style={{color: color}} >Correct</span></p>}
                 {!answer.status && <p className="answer-status"><span>Result:&nbsp;</span><span style={{color: color}} >Wrong</span></p>}
                 {answer.status === 'PENDING' && <p className="answer-status"><span>Result:&nbsp;</span><span >PENDING</span></p>}
-                {answer.status === 'APPEALED' && <p className="answer-status"><span>Result:&nbsp;</span><span >APPEALED</span></p>}
+                {/* {answer.status === 'APPEALED' && <p className="answer-status"><span>Result:&nbsp;</span><span >APPEALED</span></p>} */}
 
             </div>
             {isJudge && <div className="answer-btn-box"><AnswerButtons clicked={leftClicked} changeClick={handleClick} text={"Right"} />
             <AnswerButtons clicked={rightClicked} changeClick={handleClick} text={"Wrong"} /></div> /* div for judge with 2 buttons */}
-            {isAnswering && answer.status === false && <div className="appeal-btn-box" ><AnswerButtons clicked={appealClicked} changeClick={handleClick} text={"Appeal!"} /></div> /* div to appeal for isAnswering */}
+            {/* {isAnswering && answer.status === false && <div className="appeal-btn-box" ><AnswerButtons clicked={appealClicked} changeClick={handleClick} text={"Appeal!"} /></div> /* div to appeal for isAnswering */}
         </div>
 
 

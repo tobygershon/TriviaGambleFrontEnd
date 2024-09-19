@@ -34,12 +34,12 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                     resetTimer()
                     // update new high bet in frontend
                     updateCurrentHighBet(keyboardInput)
-                    updateMessage(['Good Bet!'])
-                } else {
+                    // updateMessage(['Good Bet!'])
+                } else if (keyboardInput !== 0) {
                     updateMessage([`You need to bet more than ${highBet}`])
-                } 
-            } else if (keyboardInput === 0) {
-                endBetting(gameId, highBetPlayerId, highBet)   // this is case where person betting gives up and lets the high bet person try to answer
+                } else {
+                    endBetting(gameId, highBetPlayerId, highBet)   // this is case where person betting gives up and lets the high bet person try to answer
+                }
             }
         }
 

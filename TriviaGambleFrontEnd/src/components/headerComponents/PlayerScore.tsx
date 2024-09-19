@@ -3,6 +3,7 @@ import { db } from '../../services/FirestoreService'
 import { onSnapshot, doc } from "firebase/firestore"
 import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
+import { updatePhase } from "../../services/PhaseChangeService"
 
 export default function PlayerScore({ player }) {
 
