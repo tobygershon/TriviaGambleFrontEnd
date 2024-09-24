@@ -24,14 +24,14 @@ export const db = getFirestore(app);
 
 const gamesCollectionRef = collection(db, "games");
 
+//method to update phase to duringBetting on frontEnd after first bet made
 
-// not used
-export async function getGame(id) {
-    const unsub = onSnapshot(doc(db, "games", id), (doc) => {
-        console.log("Current data: ", doc.data());
+export function updatePhaseFrontEnd(gameId: string, updatedPhase: string) {
+    const gameDocRef = doc(db, "games", gameId);
+
+    updateDoc(gameDocRef, {
+        gamePhase: updatedPhase
     })
-
-    unsub()
 }
 
 // method to update high bet from front end for both round and player docs
@@ -51,15 +51,6 @@ export function updateHighBet(currentRoundId: string, playerId: string, playerNa
     })
 }
 
-// method to update answer status
-export function updateAnswerStatus(answerId: string, updatedStatus: string | boolean) {
-    const answerDocRef = doc(db, "answers", answerId);
-    
-    updateDoc(answerDocRef, {
-        status: updatedStatus
-    })
-}
-
 // method to update isHighBet: false after other player bets higher
 
 export function updateNotIsHighBet(playerId: string) {
@@ -67,6 +58,15 @@ export function updateNotIsHighBet(playerId: string) {
 
     updateDoc(playerDocRef, {
         isHighBet: false
+    })
+}
+
+// method to update answer status
+export function updateAnswerStatus(answerId: string, updatedStatus: string | boolean) {
+    const answerDocRef = doc(db, "answers", answerId);
+    
+    updateDoc(answerDocRef, {
+        status: updatedStatus
     })
 }
 

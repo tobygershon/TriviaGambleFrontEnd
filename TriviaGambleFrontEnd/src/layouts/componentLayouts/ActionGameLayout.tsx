@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { onSnapshot, doc } from "firebase/firestore";
-import { db } from '../../services/FirestoreService';
 import { motion } from "framer-motion";
 import { useStore } from "@tanstack/react-store";
 import { store } from '../../store'
@@ -13,15 +11,21 @@ import { PhaseChangeHelper } from "../../services/PhaseChangeService";
 import { MessageHelperService } from "../../services/MessageHelperService";
 import { updateHighBet, updateNotIsHighBet } from "../../services/FirestoreService";
 import { startNewRound } from "../../services/BackEndService";
+import { updateGamePhase } from "../../services/BackEndService"
 
 export default function ActionGameLayout({ localPlayer, resetTimer, timerOver }) {
 
     // get gameId to pass into startNewRound method
     const gameId = useParams().gameId
 
-    // bring in game and round state from store
+    // update game phases in store
+    PhaseChangeHelper()
+
+
+    // bring in game, localPlayer and current round state from store
     const currentRound = useStore(store, (state) => state["currentRound"])
     const gameData = useStore(store, (state) => state["game"])
+    const localPlayerData = useStore(store, (state) => state["localPlayer"])
 
     // state of current High Bet and local player's last bet
     const currentHighBet = currentRound.highBet.bet
@@ -37,32 +41,9 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         return gameData.rounds[gameData.rounds.length - 1]
     }
 
-    // subscribe to changes in localPlayer doc
-    useEffect(() => {
-        const unsub = onSnapshot(doc(db, "players", localPlayer), (doc) => {
-            if (doc.data()) {
-                updateLocalPlayerData(doc.data())
-            } else {
-                console.log("error retrieving player data in action layout")
-            }
-        })
-        return unsub
-    }, [])
-
-    // local player state from store
-    const localPlayerData = useStore(store, (state) => state["localPlayer"])
-    const updateLocalPlayerData = (playerObj) => {
-        store.setState((state) => ({
-            ...state,
-            ["localPlayer"]: playerObj
-        }))
-    }
-
     // // below the phases of game are updated in the store
 
     const gamePhase = useStore(store, (state) => state["gamePhase"])
-    
-    PhaseChangeHelper(gamePhase, gameData, currentRound)
 
     // call backend to start next round when phase changes to startNextRound
     // state ensures that it is only called once
@@ -71,14 +52,9 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     useEffect(() => {
         if (gamePhase.startNextRound && localPlayerData.isAnswering) { // isAnswering player is used so that call is only made once
             startNewRound(gameId)                                       // possibly use this to control appeals?
-            // if (callOnce) {
-            // startNewRound(gameId)
-            // setCallOnce(false)
-            // console.log('startNewRoundCalled from action layout')
-            // }
-            // setTimeout(() => setCallOnce(true), 10000)
         }
     }, [gamePhase])
+
 
 // Controlls whether components are shown or not
 
@@ -121,7 +97,6 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }
     }, [gamePhase])
 
-
     // method called up from keyboard to update high bet in GameLayout
     function updateCurrentHighBet(newHighBet: number) {
         const roundId = getCurrentRoundId()
@@ -131,9 +106,67 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     // Messages
 
-    const messages = MessageHelperService(gamePhase, gameData, localPlayerData, currentRound)
+    
 
-    console.log(gamePhase)
+     // update Messages
+    MessageHelperService(gamePhase, currentRound, gameData, localPlayerData)
+
+    const messageArray = useStore(store, (state) => state["currentMessage"])
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0)       // index to control which message is rendering
+    const cancelRef = useRef({})
+
+         // renders array of current message
+
+        const messages = messageArray.map((message, index) => {
+            const messageArrayLength = messageArray.length
+            if (message) {
+            return currentMessageIndex === index &&
+                                <CurrentMessage
+                                    key={index}
+                                    message={message}
+                                    endingOpacity={index === messageArrayLength - 1 ? true : false}
+                                />
+            } else {
+                return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
+            }
+          })
+
+              //effect loops through current message array and renders subsequent components every 3sec
+
+    useEffect(() => {
+        clearInterval(cancelRef.current)
+        setCurrentMessageIndex(0)
+        const messageArrayLength = messageArray.length
+
+        let msgIndex = 0;
+        cancelRef.current = setInterval(() => {
+            if (msgIndex < messageArrayLength) {
+                msgIndex += 1
+                if (msgIndex === messageArrayLength) {
+                    clearInterval(cancelRef.current)
+                } else {
+                    setCurrentMessageIndex(prev => prev + 1)
+                }
+            }
+        }, 5000)
+    }, [messageArray])
+
+         
+
+    // Below method updates phase when certain messages are finished running
+
+    function updatePhaseFromMsgArrayEnding() {
+        if (localPlayerData.isJudge) {  // judge will be only player calling backend so that only 1 call is made
+            if (gamePhase.gameStarting) {
+                updateGamePhase(gameId, "waitingForCategory")
+            } else if (gamePhase.endBetting) {
+                updateGamePhase(gameId, "duringAnswering")
+            } else if (gamePhase.endAnswering && !gameData.hasEnded) {  // not sure if !gameData.hasEnded is necessary here, but just in case
+                updateGamePhase(gameId, "startNextRound")
+            } 
+        }
+    }
+
 
     return (
         <motion.div

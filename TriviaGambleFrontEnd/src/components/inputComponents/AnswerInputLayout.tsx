@@ -21,21 +21,17 @@ export default function AnswerInput({ type, resetTimer, timerOver }) {
         if (type === 'category' && textInput.trim().length > 0) {
             createNewCategory(gameId, textInput)
             handleClear()
-            console.log('type from category: ' + value)
         } else if (type === 'answers' && textInput.trim().length > 0) {
             addAnswer(gameId, textInput)
             handleClear()
             resetTimer()
-            console.log('type from answers: ' + value)
         } else {
             // set msg to say theres a problem?
             console.log('There was a problem with the type for the answer input submit, or submitted text length of 0')
         }
     }
 
-   
-    console.log("timer over in answer input: " + timerOver)
-    
+
     return (
         <motion.div
             id='answer-input'>

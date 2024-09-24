@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { store } from "../../store";
 import { useStore } from "@tanstack/react-store";
 import { endBetting } from "../../services/BackEndService";
+import { updatePhaseFrontEnd } from "../../services/FirestoreService";
 
 export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, highBet }) {
 
@@ -31,6 +32,9 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                 setKeyBoardInput(0)
                 setLastInput([0])
                 if (checkIfNewBetIsHigher()) {
+                    if (highBet === 0) {
+                        updatePhaseFrontEnd(gameId, "duringBetting")
+                    }
                     resetTimer()
                     // update new high bet in frontend
                     updateCurrentHighBet(keyboardInput)
