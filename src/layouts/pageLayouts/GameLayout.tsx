@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { onSnapshot, doc } from 'firebase/firestore'
+import { onSnapshot, doc, DocumentData } from 'firebase/firestore'
 import { db } from '../../services/FirestoreService'
 import Header from '../componentLayouts/HeaderLayout'
 import SideMenu from '../componentLayouts/SideMenu'
@@ -12,7 +12,7 @@ import { store } from '../../store'
 export default function GameLayout() {
 
     // gameId from url params
-    const gameId: string = useParams().gameId
+    const gameId: string | undefined= useParams().gameId
 
     // define types for objects related to firestore docs
     type GameData = {
@@ -48,7 +48,7 @@ export default function GameLayout() {
         // update local player info
 
     const localPlayerId = useStore(store, (state) => state["localPlayerId"])
-    const updateLocalPlayerData = (playerObj) => {
+    const updateLocalPlayerData = (playerObj: DocumentData | undefined) => {
         store.setState((state) => ({
             ...state,
             ["localPlayer"]: playerObj
@@ -82,7 +82,7 @@ export default function GameLayout() {
 
      // current state of game below
      const gameData = useStore(store, (state) => state["game"])
-     const updateGameData = (gameObj) => {
+     const updateGameData = (gameObj: DocumentData | undefined) => {
          store.setState((state) => ({
              ...state,
              ["game"]: gameObj
@@ -119,7 +119,7 @@ export default function GameLayout() {
     }, [currentRoundId])
 
     const currentRoundData = useStore(store, (state) => state["currentRound"])
-    const updateCurrentRound = (roundObj) => {
+    const updateCurrentRound = (roundObj: DocumentData | undefined) => {
         store.setState((state) => ({
             ...state,
             ["currentRound"]: roundObj

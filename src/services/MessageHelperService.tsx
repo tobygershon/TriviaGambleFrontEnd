@@ -8,7 +8,7 @@ export const MessageHelperService = (gamePhase, currentRound, gameData, localPla
 
     // messages to return
 
-    const setMessageArray = (msgArray) => {
+    const setMessageArray = (msgArray: (string | boolean)[]) => {
         store.setState((state) => ({
             ...state,
             ["currentMessage"]: msgArray

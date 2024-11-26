@@ -11,8 +11,8 @@ import { updatePhaseFrontEnd } from "../../services/FirestoreService";
 
 export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, highBet }) {
 
-    const [keyboardInput, setKeyBoardInput] = useState(0)
-    const [lastInput, setLastInput] = useState([0])
+    const [keyboardInput, setKeyBoardInput] = useState<number>(0)
+    const [lastInput, setLastInput] = useState<number[]>([0])
     const gameId = useParams().gameId
     const highBetPlayerId = useStore(store, (state) => state["isHighBet"])
 
@@ -33,7 +33,9 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                 setLastInput([0])
                 if (checkIfNewBetIsHigher()) {
                     if (highBet === 0) {
+                        if (gameId) {
                         updatePhaseFrontEnd(gameId, "duringBetting")
+                        }
                     }
                     resetTimer()
                     // update new high bet in frontend
@@ -42,7 +44,9 @@ export default function Keyboard({ resetTimer, timerOver, updateCurrentHighBet, 
                 } else if (keyboardInput !== 0) {
                     updateMessage([`You need to bet more than ${highBet}`])
                 } else {
+                    if (gameId) {
                     endBetting(gameId, highBetPlayerId, highBet)   // this is case where person betting gives up and lets the high bet person try to answer
+                    }
                 }
             }
         }

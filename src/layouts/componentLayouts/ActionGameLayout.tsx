@@ -48,15 +48,17 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     // call backend to start next round when phase changes to startNextRound
     // state ensures that it is only called once
 
-// const [callOnce, setCallOnce] = useState(true)
+    // const [callOnce, setCallOnce] = useState(true)
     useEffect(() => {
         if (gamePhase.startNextRound && localPlayerData.isAnswering) { // isAnswering player is used so that call is only made once
-            startNewRound(gameId)                                       // possibly use this to control appeals?
+            if (gameId) {
+                startNewRound(gameId)
+            }                                    // possibly use this to control appeals?
         }
     }, [gamePhase])
 
 
-// Controlls whether components are shown or not
+    // Controlls whether components are shown or not
 
     // Answers
     const [showAnswers, setShowAnswers] = useState(false)
@@ -79,22 +81,22 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             } else if (gamePhase.startBetting || gamePhase.endAnswering || gamePhase.waitingForJudge) {
                 setShowInput(false)
             }
-    }
+        }
     }, [gamePhase, localPlayerData])
 
-   
+
     // Keyboard
-    
+
     const [showKeyboard, setShowKeyboard] = useState(false)
 
     useEffect(() => {
-            if (gamePhase.startBetting || (gamePhase.duringBetting)) { 
-                if (!localPlayerData.isJudge) {
-                setShowKeyboard(true)          
-                }                                                
-            } else if (gamePhase.endBetting) {
-                setShowKeyboard(false)
+        if (gamePhase.startBetting || (gamePhase.duringBetting)) {
+            if (!localPlayerData.isJudge) {
+                setShowKeyboard(true)
             }
+        } else if (gamePhase.endBetting) {
+            setShowKeyboard(false)
+        }
     }, [gamePhase])
 
     // method called up from keyboard to update high bet in GameLayout
@@ -106,32 +108,32 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     // Messages
 
-    
 
-     // update Messages
+
+    // update Messages
     MessageHelperService(gamePhase, currentRound, gameData, localPlayerData)
 
     const messageArray = useStore(store, (state) => state["currentMessage"])
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0)       // index to control which message is rendering
     const cancelRef = useRef({})
 
-         // renders array of current message
+    // renders array of current message
 
-        const messages = messageArray.map((message, index) => {
-            const messageArrayLength = messageArray.length
-            if (message) {
+    const messages = messageArray.map((message, index) => {
+        const messageArrayLength = messageArray.length
+        if (message) {
             return currentMessageIndex === index &&
-                                <CurrentMessage
-                                    key={index}
-                                    message={message}
-                                    endingOpacity={index === messageArrayLength - 1 ? true : false}
-                                />
-            } else {
-                return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
-            }
-          })
+                <CurrentMessage
+                    key={index}
+                    message={message}
+                    endingOpacity={index === messageArrayLength - 1 ? true : false}
+                />
+        } else {
+            return currentMessageIndex === index && updatePhaseFromMsgArrayEnding()
+        }
+    })
 
-              //effect loops through current message array and renders subsequent components every 3sec
+    //effect loops through current message array and renders subsequent components every 3sec
 
     useEffect(() => {
         clearInterval(cancelRef.current)
@@ -151,19 +153,21 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
         }, 3000)
     }, [messageArray])
 
-         
+
 
     // Below method updates phase when certain messages are finished running
 
     function updatePhaseFromMsgArrayEnding() {
         if (localPlayerData.isJudge) {  // judge will be only player calling backend so that only 1 call is made
-            if (gamePhase.gameStarting) {
-                updateGamePhase(gameId, "waitingForCategory")
-            } else if (gamePhase.endBetting) {
-                updateGamePhase(gameId, "duringAnswering")
-            } else if (gamePhase.endAnswering && !gameData.hasEnded) {  // not sure if !gameData.hasEnded is necessary here, but just in case
-                updateGamePhase(gameId, "startNextRound")
-            } 
+            if (gameId) {
+                if (gamePhase.gameStarting) {
+                    updateGamePhase(gameId, "waitingForCategory")
+                } else if (gamePhase.endBetting) {
+                    updateGamePhase(gameId, "duringAnswering")
+                } else if (gamePhase.endAnswering && !gameData.hasEnded) {  // not sure if !gameData.hasEnded is necessary here, but just in case
+                    updateGamePhase(gameId, "startNextRound")
+                }
+            }
         }
     }
 
@@ -181,7 +185,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             {messages}
             {showAnswers && <AnswersList currentRound={currentRound} />}
             {showInput && <AnswerInput resetTimer={resetTimer} timerOver={timerOver} type={localPlayerData?.isJudge ? 'category' : 'answers'} />}
-            {showKeyboard && <Keyboard updateCurrentHighBet={updateCurrentHighBet} resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet}/>}
+            {showKeyboard && <Keyboard updateCurrentHighBet={updateCurrentHighBet} resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet} />}
         </motion.div>
 
     )

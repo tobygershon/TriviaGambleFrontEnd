@@ -18,7 +18,7 @@ export default function HomeLayout() {
     const [modalOpen, setModalOpen] = useState(false)
     const [playerName, setPlayerName] = useState("")
 
-    const [unstartedGames, setUnstartedGames] = useState([])
+    const [unstartedGames, setUnstartedGames] = useState({})
     useEffect(() => {
         if (loader) {
             setUnstartedGames(loader)

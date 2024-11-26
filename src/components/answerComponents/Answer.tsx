@@ -52,6 +52,7 @@ export default function Answer({ answerId, count, incrementCount }) {
 
     useEffect(() => {
         if (skipFirst) {
+            if (gameId) {
             if (rightClicked) {
                 submitJudgement(gameId, answerId, false, waitingForJudge)
                 console.log(waitingForJudge)
@@ -66,7 +67,8 @@ export default function Answer({ answerId, count, incrementCount }) {
                 submitJudgement(gameId, answerId, "PENDING", waitingForJudge)
                 // updateAnswerStatus(answerId, "PENDING")
             }
-        } else {
+        }
+     } else {
             setSkipFirst(true)
         }
     }, [rightClicked, leftClicked, appealClicked])

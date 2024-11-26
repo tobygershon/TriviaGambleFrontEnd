@@ -17,7 +17,7 @@ export default function ChatLayout({ chatId }) {
 
     const [chatInput, setChatInput] = useState("")
 
-    const [chats, setChats] = useState([""])
+    const [chats, setChats] = useState([{}])
 
     const [chatCount, setChatCount] = useState(0)  // this is only necessary to add unique id to array b/c firestore does not allow duplicate entries of same values
 
@@ -27,7 +27,7 @@ export default function ChatLayout({ chatId }) {
         if (chatId) {
         const unsub = onSnapshot(doc(db, "chats", chatId), (snapshot) => {
             if (snapshot.data()) {
-                setChats(snapshot.data().messages)
+                setChats(snapshot.data()?.messages)
             } else {
                 console.log("error retrieving chat data")
             }

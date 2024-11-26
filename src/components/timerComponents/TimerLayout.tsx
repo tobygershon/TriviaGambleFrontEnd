@@ -6,7 +6,7 @@ import TimerFinal from "./TimerSubsequent";
 export default function TimerLayout({ resetTimer, handleTimerOver, startNum }) {
 
     const ref = useRef(0)
-    const [number, setNumber] = useState(startNum)
+    const [number, setNumber] = useState<number>(startNum)
     const [timerOver, setTimerOver] = useState(false)
 
     useEffect(() => {

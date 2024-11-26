@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const localHost = axios.create({
-    baseURL: 'http://triviagambleflaskbackend-production.up.railway.app'
+    baseURL: 'https://triviagambleflaskbackend-production.up.railway.app'
 })
 
 // get all unstarted games
