@@ -1,7 +1,5 @@
 import PlayerScore from "./PlayerScore"
 import { motion } from "framer-motion"
-import { store } from "../../store"
-import { useStore } from "@tanstack/react-store"
 
 export default function Scoreboard({ players }) {
 

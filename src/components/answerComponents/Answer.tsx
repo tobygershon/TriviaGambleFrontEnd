@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { db, updateAnswerStatus } from '../../services/FirestoreService'
-import { onSnapshot, doc, increment } from "firebase/firestore"
+import { db } from '../../services/FirestoreService'
+import { onSnapshot, doc } from "firebase/firestore"
 import { store } from "../../store"
 import { useStore } from "@tanstack/react-store"
 import AnswerButtons from "./AnswerButtons"

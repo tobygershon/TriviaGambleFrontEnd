@@ -1,5 +1,4 @@
 import { Store } from "@tanstack/react-store";
-import CurrentMessage from "./components/generalComponents/CurrentMessage";
 
 export const store = new Store({
     currentMessage: [],

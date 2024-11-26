@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import NumberKeyboard from "./NumberKeyboardLayout";
 import ControlKeyboard from "./ControlKeyboardLayout";
-import CurrentMessage from "../generalComponents/CurrentMessage";
 import { useParams } from "react-router-dom";
 import { store } from "../../store";
 import { useStore } from "@tanstack/react-store";

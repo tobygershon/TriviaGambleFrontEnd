@@ -1,4 +1,4 @@
-import { backIn } from "framer-motion";
+// import { backIn } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function AnswerButtons({ text, clicked, changeClick }) {
