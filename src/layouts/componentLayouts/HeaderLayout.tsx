@@ -41,7 +41,7 @@ export default function Header({ gameId, resetTimer, disableSubmit, players }) {
             } else if (gamePhase.duringAnswering) {
                 // askForAppeals()   create method to open modal or show div in answers with btn saying 'done w/appeals'
                 // appeals should be asked for after timerOver as well as when last 'wrong' judgment comes through but before round is ended
-                const response = await endRound(gameId)
+                // const response = await endRound(gameId)
                 // if (response.status === 'PENDING') {
                 //     updateGamePhase(gameId, "waitingForJudge")
                 // }

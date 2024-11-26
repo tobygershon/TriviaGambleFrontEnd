@@ -38,8 +38,9 @@ export default function ChatLayout({ chatId }) {
 
 
     // text input change fx
-    function handleChange(event) {
-        setChatInput(event.target.value)
+    function handleChange(event: React.SyntheticEvent) {
+        const target = event.target as HTMLInputElement
+        setChatInput(target.value)
     }
 
     // button functions
@@ -75,7 +76,7 @@ export default function ChatLayout({ chatId }) {
 
     //below ref and effect auto scrolls to new last element when messages is updated
 
-    const chatsRef = useRef(null)
+    const chatsRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         chatsRef.current?.lastElementChild?.scrollIntoView({behavior: "smooth"})

@@ -72,7 +72,7 @@ export function updateAnswerStatus(answerId: string, updatedStatus: string | boo
 
 // method to send new chat to chat doc
 
-export function sendChat(text: string, chatId: string) {
+export function sendChat(text: object, chatId: string) {
     const chatDocRef = doc(db, "chats", chatId)
 
     updateDoc(chatDocRef, {

@@ -37,7 +37,7 @@ export default function AnswersList({ currentRound }) {
 
     // autoscroll to bottom of div for each new answer submitted
 
-    const listRef = useRef(null)
+    const listRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         listRef.current?.lastElementChild?.scrollIntoView({behavior: "smooth"})

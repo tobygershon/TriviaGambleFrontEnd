@@ -42,8 +42,9 @@ export default function HomeLayout() {
 
     // modal form changes
 
-    function handleChange(event) {
-        setPlayerName(event.target.value)
+    function handleChange(event: React.ChangeEvent) {
+        const target  = event.target as HTMLInputElement
+        setPlayerName(target.value)
     }
 
 

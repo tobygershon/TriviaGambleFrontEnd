@@ -19,7 +19,7 @@ export const updatePhase = (phase1: string, phase2: string) => {
 export const PhaseChangeHelper = () => {
 
     // get the gameId from params
-    const gameId = useParams().gameId
+    // const gameId = useParams().gameId
 
     // gamephase from store
     const gamePhase = useStore(store, (state) => state["gamePhase"])

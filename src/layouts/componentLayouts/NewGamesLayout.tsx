@@ -15,7 +15,7 @@ export default function NewGamesLayout({ unstartedGames, toggleModal, playerName
         return () => window.removeEventListener("resize", handleResize);
     }, [])
 
-    function handleCarousel(direction) {
+    function handleCarousel(direction: string) {
         if (direction === 'right' && unstartedGames.length > startIndex + 3) {
             setXAnimate(prev => prev - windowWidth / 5.1)
             setStartIndex(prev => prev + 1)
@@ -33,7 +33,7 @@ export default function NewGamesLayout({ unstartedGames, toggleModal, playerName
 
     return (
         <div id="new-game-box">
-            <div id="left-arrow" style={unstartedGames.length >= 3 ? null : { display: 'none' }} onClick={() => handleCarousel('left')} ><i className="fa-solid fa-angles-left"></i></div>
+            <div id="left-arrow" style={unstartedGames.length >= 3 ? undefined : { display: 'none' }} onClick={() => handleCarousel('left')} ><i className="fa-solid fa-angles-left"></i></div>
             <div id="game-motion-box">
                 <motion.div
                     className="new-game-motion-box is-flex"
@@ -42,7 +42,7 @@ export default function NewGamesLayout({ unstartedGames, toggleModal, playerName
                     {gamesArray}
                 </motion.div>
             </div>
-            <div id="right-arrow" style={unstartedGames.length >= 3 ? null : { display: 'none' }} onClick={() => handleCarousel('right')} ><i className="fa-solid fa-angles-right"></i></div>
+            <div id="right-arrow" style={unstartedGames.length >= 3 ? undefined : { display: 'none' }} onClick={() => handleCarousel('right')} ><i className="fa-solid fa-angles-right"></i></div>
         </div>
     )
 }

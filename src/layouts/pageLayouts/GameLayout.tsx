@@ -15,33 +15,33 @@ export default function GameLayout() {
     const gameId: string | undefined= useParams().gameId
 
     // define types for objects related to firestore docs
-    type GameData = {
-        "hasStarted": boolean;
-        "hasEnded": boolean;
-        "endingScore": number;
-        "winner": string;
-        "players": string[];
-        "rounds": string[];
-    }
+    // type GameData = {
+    //     "hasStarted": boolean;
+    //     "hasEnded": boolean;
+    //     "endingScore": number;
+    //     "winner": string;
+    //     "players": string[];
+    //     "rounds": string[];
+    // }
 
-    type PlayerData = {
-        "name": string;
-        "score": number;
-        "isJudge": boolean;
-        "isAnswering": boolean;
-        "isHighBet": boolean;
-    }
+    // type PlayerData = {
+    //     "name": string;
+    //     "score": number;
+    //     "isJudge": boolean;
+    //     "isAnswering": boolean;
+    //     "isHighBet": boolean;
+    // }
 
-    type RoundData = {
-        "category": string;
-        "isBetting": boolean;
-        "highBet": {
-            "bet": number;
-            "player": string;
-        },
-        "isOver": boolean;
-        "answers": string[]
-    }
+    // type RoundData = {
+    //     "category": string;
+    //     "isBetting": boolean;
+    //     "highBet": {
+    //         "bet": number;
+    //         "player": string;
+    //     },
+    //     "isOver": boolean;
+    //     "answers": string[]
+    // }
 
         // below are the onSnapshot effects to update real time info
 

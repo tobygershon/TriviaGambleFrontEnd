@@ -115,7 +115,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
 
     const messageArray = useStore(store, (state) => state["currentMessage"])
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0)       // index to control which message is rendering
-    const cancelRef = useRef({})
+    const cancelRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     // renders array of current message
 
@@ -136,7 +136,9 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
     //effect loops through current message array and renders subsequent components every 3sec
 
     useEffect(() => {
-        clearInterval(cancelRef.current)
+        if (cancelRef.current) {
+            clearInterval(cancelRef.current)
+        }
         setCurrentMessageIndex(0)
         const messageArrayLength = messageArray.length
 
@@ -145,7 +147,9 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             if (msgIndex < messageArrayLength) {
                 msgIndex += 1
                 if (msgIndex === messageArrayLength) {
-                    clearInterval(cancelRef.current)
+                    if (cancelRef.current) {
+                        clearInterval(cancelRef.current)
+                    }
                 } else {
                     setCurrentMessageIndex(prev => prev + 1)
                 }
@@ -182,7 +186,7 @@ export default function ActionGameLayout({ localPlayer, resetTimer, timerOver })
             }}
             transition={{ duration: 1 }}
         >
-            {messages}
+            {messages ? messages : ""}
             {showAnswers && <AnswersList currentRound={currentRound} />}
             {showInput && <AnswerInput resetTimer={resetTimer} timerOver={timerOver} type={localPlayerData?.isJudge ? 'category' : 'answers'} />}
             {showKeyboard && <Keyboard updateCurrentHighBet={updateCurrentHighBet} resetTimer={resetTimer} timerOver={timerOver} highBet={currentHighBet} />}

@@ -1,4 +1,3 @@
-import React from "react";
 import GenericButton from '../generalComponents/GenericButton'
 
 export default function NumberKeyboard({ update, firstNum, lastNum }) {

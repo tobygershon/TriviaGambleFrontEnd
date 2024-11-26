@@ -22,7 +22,7 @@ export const MessageHelperService = (gamePhase, currentRound, gameData, localPla
     const waitingForCategoryMsgs = ["Please wait for this round's judge to create a category", "waiting for the category..."]
     const startBettingMsgs = [`This round's category is ${currentRound.category}!`, `How many ${currentRound.category} do you think you can think of?`, "Get Ready to Bet!", "Start Betting!"]
     const duringBetMsgsFirstBet = [`Good Bet! Will your opponent bet higher than ${currentRound.highBet.bet}?`]
-    const duringBettingMsgsResponse =[`${currentRound.highBet.player} bet ${currentRound.highBet.bet}! Can you bet higher?`, `Or let ${currentRound.highBet.player} try to get ${currentRound.highBet.bet}`]
+    const duringBettingMsgsResponse = [`${currentRound.highBet.player} bet ${currentRound.highBet.bet}! Can you bet higher?`, `Or let ${currentRound.highBet.player} try to get ${currentRound.highBet.bet}`]
     const endBettingMsgsHighBet = ["The betting is over!", `Congratulations! You have the high bet of ${currentRound.highBet.bet}!`, "Get ready to start answering!", "Get set!", false]
     const endBettingMsgsOthers = ["The betting is over!", `${currentRound.highBet.player} has the high bet of ${currentRound.highBet.bet}!`, `${currentRound.highBet.player} is getting ready to start answering...`, false]
     const duringAnsweringMsgsIsAnswering = ["Go! Start entering your answers before the timer expires!"]
@@ -33,56 +33,58 @@ export const MessageHelperService = (gamePhase, currentRound, gameData, localPla
     const gameEndingMsgs = ["The Game is Over!", `Congratulations ${gameData.winner}! You win with ${gameData.endingScore} points!`]
 
     // need state from store for currentRound wonRound
-    const wonRound = useStore(store, (state) => state["currentRound"].wonRound)
+    const wonRound: string | boolean = useStore(store, (state) => state["currentRound"].wonRound)
 
-        if (gamePhase.beforeStart) {
-            setMessageArray(beforeStartMsgs)
-        } else if (gamePhase.gameStarting) {
-            setMessageArray(gameStartingMsgs)
-        } else if (gamePhase.waitingForCategory) {
-            if (localPlayerData) {
-                if (localPlayerData.isJudge) {
-                    setMessageArray(waitingForCategoryJudgeMsgs)
-                } else {
-                    setMessageArray(waitingForCategoryMsgs)
-                }
-            }
-        } else if (gamePhase.startBetting) {
-            setMessageArray(startBettingMsgs)
-        } else if (gamePhase.duringBetting) {
-            if (localPlayerData.isHighBet) {
-                setMessageArray(duringBetMsgsFirstBet)
+    if (gamePhase.beforeStart) {
+        setMessageArray(beforeStartMsgs)
+    } else if (gamePhase.gameStarting) {
+        setMessageArray(gameStartingMsgs)
+    } else if (gamePhase.waitingForCategory) {
+        if (localPlayerData) {
+            if (localPlayerData.isJudge) {
+                setMessageArray(waitingForCategoryJudgeMsgs)
             } else {
-                setMessageArray(duringBettingMsgsResponse)
+                setMessageArray(waitingForCategoryMsgs)
             }
-        } else if (gamePhase.endBetting) {
-            if (localPlayerData) {
-                if (localPlayerData.isHighBet) {
-                    setMessageArray(endBettingMsgsHighBet)
-                } else {
-                    setMessageArray(endBettingMsgsOthers)
-                }
+        }
+    } else if (gamePhase.startBetting) {
+        setMessageArray(startBettingMsgs)
+    } else if (gamePhase.duringBetting) {
+        if (localPlayerData.isHighBet) {
+            setMessageArray(duringBetMsgsFirstBet)
+        } else {
+            setMessageArray(duringBettingMsgsResponse)
+        }
+    } else if (gamePhase.endBetting) {
+        if (localPlayerData) {
+            if (localPlayerData.isHighBet) {
+                setMessageArray(endBettingMsgsHighBet)
+            } else {
+                setMessageArray(endBettingMsgsOthers)
             }
-        } else if (gamePhase.duringAnswering) {
-            if (localPlayerData) {
-                if (localPlayerData.isHighBet) {
-                    setMessageArray(duringAnsweringMsgsIsAnswering)
-                } else {
-                    setMessageArray(duringAnsweringMsgsOthers)
-                }
+        }
+    } else if (gamePhase.duringAnswering) {
+        if (localPlayerData) {
+            if (localPlayerData.isHighBet) {
+                setMessageArray(duringAnsweringMsgsIsAnswering)
+            } else {
+                setMessageArray(duringAnsweringMsgsOthers)
             }
-        } else if (gamePhase.endAnswering) {
+        }
+    } else if (gamePhase.endAnswering) {
+        if (typeof wonRound === "boolean") {
             if (wonRound === true) {
                 setMessageArray(endAnsweringWinningMsgs)
             } else if (wonRound === false) {
                 setMessageArray(endAnsweringLosingMsgs)
             }
-        } else if (gamePhase.waitingForJudge) {
-            setMessageArray(waitingForJudgeMsgs)
-        } else if (gamePhase.gameEnding) {
-            setMessageArray(gameEndingMsgs)
-        } else {
-            console.log("something went wrong setting messages")
         }
+    } else if (gamePhase.waitingForJudge) {
+        setMessageArray(waitingForJudgeMsgs)
+    } else if (gamePhase.gameEnding) {
+        setMessageArray(gameEndingMsgs)
+    } else {
+        console.log("something went wrong setting messages")
+    }
 
 }

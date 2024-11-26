@@ -5,7 +5,7 @@ import TimerFinal from "./TimerSubsequent";
 
 export default function TimerLayout({ resetTimer, handleTimerOver, startNum }) {
 
-    const ref = useRef(0)
+    const ref = useRef<ReturnType<typeof setTimeout> | null>(null)
     const [number, setNumber] = useState<number>(startNum)
     const [timerOver, setTimerOver] = useState(false)
 
@@ -25,7 +25,9 @@ export default function TimerLayout({ resetTimer, handleTimerOver, startNum }) {
         ref.current = setInterval(() => {
             if (currentNum === 0) {
                 setNumber(prevNum => prevNum - 1)
+                if (ref.current !== null) {
                 clearInterval(ref.current)
+                }
             } else {
                 setNumber(prevNum => prevNum - 1)
                 currentNum -= 1
