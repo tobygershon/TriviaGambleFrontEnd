@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, onSnapshot, doc, collection, updateDoc, arrayUnion } from "firebase/firestore";
+import { getFirestore, doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 export const db = getFirestore(app);
 
-const gamesCollectionRef = collection(db, "games");
+// const gamesCollectionRef = collection(db, "games");
 
 //method to update phase to duringBetting on frontEnd after first bet made
 
@@ -72,7 +72,7 @@ export function updateAnswerStatus(answerId: string, updatedStatus: string | boo
 
 // method to send new chat to chat doc
 
-export function sendChat(text, chatId: string) {
+export function sendChat(text: string, chatId: string) {
     const chatDocRef = doc(db, "chats", chatId)
 
     updateDoc(chatDocRef, {
